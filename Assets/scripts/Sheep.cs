@@ -15,12 +15,11 @@ public class Sheep : Entity
     public float grazeTimer;
     public float restTimer;
 
-    private Vector3 target;
     //public float fleeDistance;
     public float wanderRadius;
 
 
-    void Start()
+    protected void Start()
     {
         NavAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
@@ -28,7 +27,7 @@ public class Sheep : Entity
     }
     
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         //flee mechanic not working
         /*
@@ -150,17 +149,5 @@ public class Sheep : Entity
         }
     }
 
-    public Vector3 RandomNavmeshLocation(float radius)
-    {
-        Vector3 randomDirection = Random.insideUnitSphere * radius;
-        randomDirection += transform.position;
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
-        {
-            finalPosition = hit.position;
-        }
-        return finalPosition;
-    } //https://discussions.unity.com/t/how-to-get-a-random-point-on-navmesh/73440/2 answer by user:  @Selzier
 
 }
