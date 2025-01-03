@@ -64,6 +64,7 @@ public class MalusAranea : Entity
     protected void Chasing()
     {
         NavAgent.acceleration = 15;
+        anim.speed = 1;
         NavAgent.speed = 20;
         NavAgent.autoBraking = false;
 

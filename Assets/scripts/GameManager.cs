@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject whitesheepPrefab;
     [SerializeField] GameObject goatPrefab;
 
+    Terrain terrain;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
             //sheep.GetComponent<Sheep>().player = GameObject.Find("Player");
             animals.Add(animalPrefab);
         }
+
     }
 
     // Update is called once per frame

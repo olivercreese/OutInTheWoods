@@ -5,7 +5,7 @@ public class LightingManager : MonoBehaviour
 {
     [SerializeField] private Light directionalLight;
     [SerializeField] private LightingPreset preset;
-
+    [SerializeField] private Material skyboxMaterial;
     [SerializeField,Range(0,24)] public float TimeOfDay;
 
     private void Update()
