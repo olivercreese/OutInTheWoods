@@ -20,6 +20,9 @@ public class InputManager : MonoBehaviour {
 
         groundMovement.Jump.performed += _ => movement.OnJumpPressed();
 
+        groundMovement.Crouch.performed += _ => movement.OnCrouchPressed();
+        
+
         groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
         groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();
     }

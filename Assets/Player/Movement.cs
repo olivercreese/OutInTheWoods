@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
@@ -9,6 +10,8 @@ public class Movement : MonoBehaviour {
 
     [SerializeField] float jumpHeight = 3.5f;
     bool jump;
+    bool crouch;
+    [SerializeField] Transform camera;
 
     [SerializeField] float gravity = -9.81f;
     Vector3 verticalVelocity = Vector3.zero;
@@ -30,11 +33,19 @@ public class Movement : MonoBehaviour {
             if (isGrounded)
             {
                 verticalVelocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);
-                Debug.Log("jumoping");
+                Debug.Log("jumping");
             }
             jump = false;
         }
 
+        if (crouch)
+        {
+            camera.position = new Vector3(camera.position.x, came, camera.position.z);
+        }
+        else
+        {
+            controller.height = 3.8f;
+        }
         verticalVelocity.y += gravity * Time.deltaTime;
         controller.Move(verticalVelocity * Time.deltaTime);
     }
@@ -55,4 +66,8 @@ public class Movement : MonoBehaviour {
         jump = true;
     }
 
+    public void OnCrouchPressed()
+    {
+        crouch = true;
+    }
 }
