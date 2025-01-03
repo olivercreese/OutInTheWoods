@@ -1395,6 +1395,8 @@ MonoBehaviour:
   anim: {fileID: 875253962}
   player: {fileID: 1141866850}
   currentState: 1
+  DetectRange: 40
+  DetectAngle: 90
 --- !u!1001 &879664757
 PrefabInstance:
   m_ObjectHideFlags: 0

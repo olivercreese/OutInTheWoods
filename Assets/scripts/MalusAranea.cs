@@ -9,11 +9,16 @@ public class MalusAranea : Entity
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
 
-    public enum monsterState { Chasing, Idle, Attacking, wandering, wait }
+    //animation
+    public enum monsterState { Chasing, Idle, Attacking, wandering, wait, searching}
     public monsterState currentState;
-
     private float restTimer;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private float searchTimer;
+    //line of sight 
+    public float DetectRange = 10f;
+    public float DetectAngle = 45f;
+    bool isInAngle, isInRange, isNotHidden;
+
     protected void Start()
     {
         NavAgent = GetComponent<NavMeshAgent>();
@@ -21,9 +26,11 @@ public class MalusAranea : Entity
         currentState = monsterState.Idle;
     }
 
-    // Update is called once per frame
     protected void Update()
     {
+   
+        if (canSeePlayer() && currentState!=monsterState.searching) currentState = monsterState.Chasing;
+
         switch (currentState)
         {
             case monsterState.Chasing:
@@ -32,10 +39,12 @@ public class MalusAranea : Entity
                 NavAgent.SetDestination(player.transform.position);
                 break;
             case monsterState.Idle:
+                anim.SetBool("isChasing", false);
+                anim.SetBool("isWandering", false);
                 Idle();
                 break;
             case monsterState.Attacking:
-                anim.SetBool("isAttacking", true);
+                anim.SetBool("isChasing", false);
                 Attacking();
                 break;
             case monsterState.wandering:
@@ -44,15 +53,28 @@ public class MalusAranea : Entity
             case monsterState.wait:
                 wait();
                 break;
+            case monsterState.searching:
+                anim.SetBool("isChasing", false);
+                anim.SetBool("isWandering", true);
+                Searching();
+                break;
         }
     }
 
     protected void Chasing()
     {
+        NavAgent.acceleration = 15;
+        NavAgent.speed = 20;
+        NavAgent.autoBraking = false;
+
         if (NavAgent.remainingDistance <= 1)
         {
             currentState = monsterState.Attacking;
-            anim.SetBool("isChasing", false);
+        }
+
+        if (!canSeePlayer())
+        {
+            currentState = monsterState.searching;
         }
     }
 
@@ -69,6 +91,7 @@ public class MalusAranea : Entity
     protected void Idle()
     {
         int random = Random.Range(0, 2);
+        anim.speed = 1;
         switch (random)
         {
             case 0:
@@ -83,10 +106,17 @@ public class MalusAranea : Entity
     }
     protected void Attacking()
     {
+        anim.SetTrigger("Attack");
+        NavAgent.speed = 0;
+
         
     }
+
     protected void wandering()
     {
+        NavAgent.acceleration = 8;
+        NavAgent.speed = 10;
+        NavAgent.autoBraking = true;
         if (NavAgent.remainingDistance <= 0.5f)
         {
             currentState = monsterState.Idle;
@@ -94,4 +124,52 @@ public class MalusAranea : Entity
         }
     }
 
+    protected void Searching()
+    {
+        searchTimer += Time.deltaTime;
+        if (searchTimer >= 10)
+        {
+            searchTimer = 0;
+            currentState = monsterState.Idle;
+        }
+        DetectAngle = 180;
+        DetectRange = 40;
+
+        if (canSeePlayer())
+        {
+            currentState = monsterState.Chasing;
+        }
+
+        if (NavAgent.destination == null || NavAgent.remainingDistance < 1) NavAgent.SetDestination(RandomNavmeshLocation(5));
+
+        NavAgent.speed = 2;
+        NavAgent.acceleration = 5;
+        NavAgent.autoBraking = true;
+        anim.speed = 0.5f;
+        anim.SetBool("isWandering", true);
+
+    }
+    protected bool canSeePlayer()
+    {
+        isInAngle = false;
+        isInRange = false;
+        isNotHidden = false;
+
+        if (Vector3.Distance(transform.position, player.transform.position) < DetectRange) isInRange = true;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, Mathf.Infinity))
+        {
+            if (hit.transform.gameObject == player) isNotHidden = true;
+        }
+
+        Vector3 side1 = player.transform.position - transform.position;
+        Vector3 side2 = transform.forward;
+        float angle = Vector3.SignedAngle(side1, side2, Vector3.up);
+        if (angle < DetectAngle && angle > -1 * DetectAngle) isInAngle = true;
+
+        if (isInAngle && isInRange && isNotHidden) return true;
+        else return false;
+
+    } //https://www.youtube.com/watch?v=kMHwy-unZ5M
 }
