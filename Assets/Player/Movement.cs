@@ -38,14 +38,7 @@ public class Movement : MonoBehaviour {
             jump = false;
         }
 
-        if (crouch)
-        {
-            camera.position = new Vector3(camera.position.x, came, camera.position.z);
-        }
-        else
-        {
-            controller.height = 3.8f;
-        }
+    
         verticalVelocity.y += gravity * Time.deltaTime;
         controller.Move(verticalVelocity * Time.deltaTime);
     }
