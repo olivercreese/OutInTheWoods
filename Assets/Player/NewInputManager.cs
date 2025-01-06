@@ -11,6 +11,7 @@ namespace OITW.Manager
         public Vector2 Move { get; private set; }
         public Vector2 Look { get; private set; }
         public bool Run { get; private set; }
+        public bool Jump { get; private set; }
 
         private InputActionMap _currentActionMap;
 
@@ -19,22 +20,33 @@ namespace OITW.Manager
         private InputAction lookAction;
 
         private InputAction runAction;
+        private InputAction jumpAction;
 
         private void Awake()
         {
+            HideCursor();
             _currentActionMap = playerInput.currentActionMap;
             moveAction = _currentActionMap.FindAction("Move");
             lookAction = _currentActionMap.FindAction("Look");
             runAction = _currentActionMap.FindAction("Run");
+            jumpAction = _currentActionMap.FindAction("Jump");
 
             moveAction.performed += OnMove;
             lookAction.performed += OnLook;
             runAction.performed += OnRun;
+            jumpAction.performed += OnJump;
 
             moveAction.canceled += OnMove;
             lookAction.canceled += OnLook;
             runAction.canceled += OnRun;
+            jumpAction.canceled += OnJump;
 
+        }
+
+        private void HideCursor()
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void OnMove(InputAction.CallbackContext context)
@@ -51,7 +63,10 @@ namespace OITW.Manager
         {
             Run = context.ReadValueAsButton();
         }
-
+        private void OnJump(InputAction.CallbackContext context)
+        {
+           Jump = context.ReadValueAsButton();
+        }
         private void OnEnable()
         {
             _currentActionMap.Enable();
