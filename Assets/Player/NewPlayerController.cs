@@ -22,7 +22,6 @@ namespace OITW.Player //https://www.youtube.com/watch?v=xWHsS7ju3m8
         private Rigidbody rb;
         private NewInputManager inputManager;
 
-        public CapsuleCollider capsuleCollider;
         private Animator animator;
         private bool grounded;
         private bool hasAnimator;
@@ -55,13 +54,10 @@ namespace OITW.Player //https://www.youtube.com/watch?v=xWHsS7ju3m8
             
         }
 
-        private void Update()
-        {
-            SampleGround();
-        }
 
         private void FixedUpdate()
         {
+            SampleGround();
             Move();
             HandleJump();
         }
@@ -124,7 +120,7 @@ namespace OITW.Player //https://www.youtube.com/watch?v=xWHsS7ju3m8
             if (!hasAnimator) return;
             RaycastHit hitInfo;
 
-            if (Physics.Raycast(new Vector3(transform.position.x,transform.position.y + 0.3f,transform.position.z), Vector3.down, out hitInfo, Distance2Ground + 0.1f, groundCheck))
+            if (Physics.Raycast(new Vector3(transform.position.x,transform.position.y + 0.5f,transform.position.z), Vector3.down, out hitInfo, Distance2Ground + 0.1f, groundCheck))
             {
                 //grounded
                 grounded = true;
@@ -134,6 +130,7 @@ namespace OITW.Player //https://www.youtube.com/watch?v=xWHsS7ju3m8
             //falling
             Debug.Log(grounded);
             grounded = false;
+            rb.AddForce(Vector3.down * 20f, ForceMode.Acceleration); // increase gravity
             SetAnimationGrounding();
             return;
 
