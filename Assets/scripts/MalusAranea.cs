@@ -133,8 +133,8 @@ public class MalusAranea : Entity
             searchTimer = 0;
             currentState = monsterState.Idle;
         }
-        DetectAngle = 180;
-        DetectRange = 40;
+        //DetectAngle = 180;
+        //DetectRange = 40;
 
         if (canSeePlayer())
         {
@@ -146,10 +146,11 @@ public class MalusAranea : Entity
         NavAgent.speed = 2;
         NavAgent.acceleration = 5;
         NavAgent.autoBraking = true;
-        anim.speed = 0.5f;
         anim.SetBool("isWandering", true);
 
     }
+
+
     protected bool canSeePlayer()
     {
         isInAngle = false;
@@ -158,8 +159,8 @@ public class MalusAranea : Entity
 
         if (Vector3.Distance(transform.position, player.transform.position) < DetectRange) isInRange = true;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, Mathf.Infinity))
+        RaycastHit hit;        
+        if (Physics.Raycast(new Vector3(transform.position.x,transform.position.y + 6,transform.position.z), (player.transform.position - transform.position), out hit, Mathf.Infinity))
         {
             if (hit.transform.gameObject == player) isNotHidden = true;
         }
