@@ -3827,7 +3827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2945979411073103959, guid: 92648d84b69617a45830ca5105708669, type: 3}
       propertyPath: m_Mass
-      value: 311.2
+      value: 66.07
       objectReference: {fileID: 0}
     - target: {fileID: 2945979411073103959, guid: 92648d84b69617a45830ca5105708669, type: 3}
       propertyPath: m_Constraints
@@ -3835,7 +3835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5453918162957320742, guid: 92648d84b69617a45830ca5105708669, type: 3}
       propertyPath: jumpFactor
-      value: 5000
+      value: 764
       objectReference: {fileID: 0}
     - target: {fileID: 5453918162957320742, guid: 92648d84b69617a45830ca5105708669, type: 3}
       propertyPath: Distance2Ground
