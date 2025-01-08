@@ -1457,9 +1457,9 @@ MonoBehaviour:
   NavAgent: {fileID: 1593014181926923052}
   anim: {fileID: 1557284373540754369}
   player: {fileID: 0}
-  DetectRange: 150
-  DetectAngle: 120
   currentState: 1
+  DetectRange: 100
+  DetectAngle: 100
 --- !u!195 &1593014181926923052
 NavMeshAgent:
   m_ObjectHideFlags: 0

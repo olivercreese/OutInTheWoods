@@ -143,7 +143,6 @@ public class NewPlayerController : MonoBehaviour
             return;
         }
         //falling
-        Debug.Log(grounded);
         grounded = false;
         rb.AddForce(Vector3.down * 200f, ForceMode.Acceleration); // increase gravity
         SetAnimationGrounding();
