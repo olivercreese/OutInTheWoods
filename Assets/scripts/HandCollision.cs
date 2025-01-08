@@ -5,7 +5,7 @@ public class HandCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && GetComponentInParent<MalusAranea>().currentState == MalusAranea.monsterState.Attacking)
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player hit by hand");
         }

@@ -75,7 +75,7 @@ public class MalusAranea : Entity
         NavAgent.autoBraking = false;
         aggro = true;
 
-        if (NavAgent.remainingDistance <= 4)
+        if (NavAgent.remainingDistance <= 2)
         {
             //currentState = monsterState.Attacking;
             anim.SetTrigger("Attack");
