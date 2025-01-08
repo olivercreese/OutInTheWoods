@@ -9,21 +9,27 @@ public class MalusAranea : Entity
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
 
+    private NewInputManager inputManager;
+    private bool aggro;
+
     //animation
     public enum monsterState { Chasing, Idle, Attacking, wandering, wait, searching}
     public monsterState currentState;
     private float restTimer;
     private float searchTimer;
     //line of sight 
+
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
     bool isInAngle, isInRange, isNotHidden;
 
-    protected void Start()
+    protected void Awake()
     {
         NavAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         currentState = monsterState.Idle;
+        player = GameObject.FindWithTag("Player");
+        inputManager = player.GetComponent<NewInputManager>();
     }
 
     protected void Update()
@@ -67,6 +73,7 @@ public class MalusAranea : Entity
         anim.speed = 1;
         NavAgent.speed = 20;
         NavAgent.autoBraking = false;
+        aggro = true;
 
         if (NavAgent.remainingDistance <= 1)
         {
@@ -128,6 +135,7 @@ public class MalusAranea : Entity
     protected void Searching()
     {
         searchTimer += Time.deltaTime;
+        if (searchTimer > 3) aggro = false;
         if (searchTimer >= 10)
         {
             searchTimer = 0;
@@ -156,6 +164,15 @@ public class MalusAranea : Entity
         isInAngle = false;
         isInRange = false;
         isNotHidden = false;
+        
+        if (inputManager.Crouch && !aggro)
+        {
+            DetectRange = 15;
+        }
+        else
+        {
+            DetectRange = 100;
+        }
 
         if (Vector3.Distance(transform.position, player.transform.position) < DetectRange) isInRange = true;
 

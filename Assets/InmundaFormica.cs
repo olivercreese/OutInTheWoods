@@ -9,6 +9,10 @@ public class InmundaFormica : Entity
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
 
+
+    private NewInputManager inputManager;
+    private bool aggro;
+
     //animation
     public enum monsterState { Chasing, Idle, Attacking, wandering, wait, searching }
     public monsterState currentState;
@@ -25,6 +29,8 @@ public class InmundaFormica : Entity
         NavAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         currentState = monsterState.Idle;
+        player = GameObject.FindWithTag("Player");
+        inputManager = player.GetComponent<NewInputManager>();
     }
 
     protected void Update()
@@ -69,6 +75,7 @@ public class InmundaFormica : Entity
         NavAgent.speed = 20;
         //NavAgent.autoBraking = false;
         NavAgent.angularSpeed = 300;
+        aggro = true;
 
         if (NavAgent.remainingDistance <= 1)
         {
@@ -132,6 +139,7 @@ public class InmundaFormica : Entity
     protected void Searching()
     {
         searchTimer += Time.deltaTime;
+        if (searchTimer > 3) aggro = false;
         if (searchTimer >= 10)
         {
             searchTimer = 0;
@@ -158,6 +166,15 @@ public class InmundaFormica : Entity
         isInAngle = false;
         isInRange = false;
         isNotHidden = false;
+
+        if (inputManager.Crouch && !aggro)
+        {
+            DetectRange = 15;
+        }
+        else
+        {
+            DetectRange = 100;
+        }
 
         if (Vector3.Distance(transform.position, player.transform.position) < DetectRange) isInRange = true;
 

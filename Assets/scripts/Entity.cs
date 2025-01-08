@@ -23,7 +23,7 @@ public class Entity : MonoBehaviour
         return false;
     }
 
-    protected virtual void Die()
+    public void Die()
     {
         Destroy(gameObject);
     }
