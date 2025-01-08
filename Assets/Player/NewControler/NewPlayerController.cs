@@ -156,7 +156,7 @@ public class NewPlayerController : MonoBehaviour
         animator.SetBool(groundHash, grounded);
     }
 
-
+ 
 
 
 

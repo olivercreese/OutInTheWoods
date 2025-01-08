@@ -42,6 +42,7 @@ public class MalusAranea : Entity
             case monsterState.Chasing:
                 Chasing();
                 anim.SetBool("isChasing", true);
+                anim.SetBool("isWandering", false);
                 NavAgent.SetDestination(player.transform.position);
                 break;
             case monsterState.Idle:
@@ -71,14 +72,17 @@ public class MalusAranea : Entity
     {
         NavAgent.acceleration = 15;
         anim.speed = 1;
-        NavAgent.speed = 20;
         NavAgent.autoBraking = false;
         aggro = true;
 
-        if (NavAgent.remainingDistance <= 1)
+        if (NavAgent.remainingDistance <= 4)
         {
-            currentState = monsterState.Attacking;
+            //currentState = monsterState.Attacking;
+            anim.SetTrigger("Attack");
+            NavAgent.speed = 0;
         }
+        else NavAgent.speed = 20;
+
 
         if (!canSeePlayer())
         {
@@ -135,7 +139,7 @@ public class MalusAranea : Entity
     protected void Searching()
     {
         searchTimer += Time.deltaTime;
-        if (searchTimer > 3) aggro = false;
+        aggro = false;
         if (searchTimer >= 10)
         {
             searchTimer = 0;
@@ -191,4 +195,13 @@ public class MalusAranea : Entity
         else return false;
 
     } //https://www.youtube.com/watch?v=kMHwy-unZ5M
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            currentState = monsterState.Attacking;
+        }
+    }
+
 }
