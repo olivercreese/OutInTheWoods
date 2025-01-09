@@ -1,5 +1,46 @@
 {
     "m_Dictionary": {
-        "m_DictionaryValues": []
+        "m_DictionaryValues": [
+            {
+                "type": "UnityEngine.Polybrush.BrushMirror, Unity.Polybrush, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "Brush.MirrorAxis",
+                "value": "{\"m_Value\":0}"
+            },
+            {
+                "type": "UnityEngine.Polybrush.MirrorCoordinateSpace, Unity.Polybrush, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "Brush.MirrorSpace",
+                "value": "{\"m_Value\":0}"
+            },
+            {
+                "type": "UnityEditor.Polybrush.PrefabLoadout, Unity.Polybrush.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "ScatteringEditor.userLoadout",
+                "value": "{\"m_Value\":{\"infos\":[{\"palette\":{\"fileID\":11400000,\"guid\":\"5aea45dfae19a90498b10a1a46f8972d\",\"type\":2},\"prefab\":{\"fileID\":1292177600455530,\"guid\":\"77f3ba29dd8de4b178823dd440fc6b90\",\"type\":3}},{\"palette\":{\"fileID\":11400000,\"guid\":\"5aea45dfae19a90498b10a1a46f8972d\",\"type\":2},\"prefab\":{\"fileID\":1266424810750876,\"guid\":\"ca055d4d37f0c467896251d325bf3c2a\",\"type\":3}},{\"palette\":{\"fileID\":11400000,\"guid\":\"5aea45dfae19a90498b10a1a46f8972d\",\"type\":2},\"prefab\":{\"fileID\":1201115261169678,\"guid\":\"ed4b037ed698b443ca1065bce37f9d62\",\"type\":3}}]}}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "Scattering.UsePivotForPlacement",
+                "value": "{\"m_Value\":false}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "Scattering.ParentObjectsWithSurface",
+                "value": "{\"m_Value\":true}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "Scattering.AvoidOverlappingObjects",
+                "value": "{\"m_Value\":false}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "Mesh.RebuildColliders",
+                "value": "{\"m_Value\":true}"
+            },
+            {
+                "type": "System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "ScatteringEditor.PreviewThumSize",
+                "value": "{\"m_Value\":64}"
+            }
+        ]
     }
 }
