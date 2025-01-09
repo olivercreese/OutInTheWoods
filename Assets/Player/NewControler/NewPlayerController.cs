@@ -37,6 +37,7 @@ public class NewPlayerController : MonoBehaviour
 
     private const float walkSpeed = 2.0f;
     private const float runSpeed = 6.0f;
+    private float AirTime;
 
     private Vector2 currentVelocity;
 
@@ -135,7 +136,7 @@ public class NewPlayerController : MonoBehaviour
         if (!hasAnimator) return;
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z), Vector3.down, out hitInfo, Distance2Ground + 0.1f, groundCheck))
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z), Vector3.down, out hitInfo, Distance2Ground + 0.1f, groundCheck))
         {
             //grounded
             grounded = true;
@@ -144,8 +145,9 @@ public class NewPlayerController : MonoBehaviour
         }
         //falling
         grounded = false;
-        rb.AddForce(Vector3.down * 200f, ForceMode.Acceleration); // increase gravity
-        SetAnimationGrounding();
+        AirTime += Time.deltaTime;
+        rb.AddForce(Vector3.down * 20f, ForceMode.Acceleration); // increase gravity
+        if (AirTime > 1) SetAnimationGrounding();
         return;
 
     }
