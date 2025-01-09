@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[ExecuteAlways] //https://www.youtube.com/watch?v=m9hj9PdO328
-public class LightingManager : MonoBehaviour
+[ExecuteAlways] 
+public class LightingManager : MonoBehaviour //https://www.youtube.com/watch?v=m9hj9PdO328
 {
     [SerializeField] private Light directionalLight;
     [SerializeField] private LightingPreset preset;

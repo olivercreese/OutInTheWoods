@@ -221,14 +221,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9883157dc3f98b48b9ec0a3fd3e8d6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 100
   NavAgent: {fileID: 4294668979420105844}
   anim: {fileID: 7208271673479795997}
   player: {fileID: 0}
-  DetectRange: 150
-  DetectAngle: 60
   currentState: 1
   eyePos: {fileID: 4294305745967618843}
+  DetectRange: 60
+  DetectAngle: 60
 --- !u!1 &2124071189448566784
 GameObject:
   m_ObjectHideFlags: 0

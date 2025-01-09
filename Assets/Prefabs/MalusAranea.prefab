@@ -1453,12 +1453,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d62e081a09c72e34db9ac3ff50dfd8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 100
   NavAgent: {fileID: 1593014181926923052}
   anim: {fileID: 1557284373540754369}
   player: {fileID: 0}
   currentState: 1
-  DetectRange: 100
+  DetectRange: 60
   DetectAngle: 100
 --- !u!195 &1593014181926923052
 NavMeshAgent:

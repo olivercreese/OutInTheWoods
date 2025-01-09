@@ -173,7 +173,7 @@ public class InmundaFormica : Entity
         }
         else
         {
-            DetectRange = 100;
+            DetectRange = 60;
         }
 
         if (Vector3.Distance(transform.position, player.transform.position) < DetectRange) isInRange = true;
