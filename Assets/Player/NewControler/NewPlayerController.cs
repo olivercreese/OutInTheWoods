@@ -135,7 +135,7 @@ public class NewPlayerController : MonoBehaviour
         if (!hasAnimator) return;
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Vector3.down, out hitInfo, Distance2Ground + 0.1f, groundCheck))
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z), Vector3.down, out hitInfo, Distance2Ground + 0.1f, groundCheck))
         {
             //grounded
             grounded = true;

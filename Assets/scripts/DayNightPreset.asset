@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AmbientColor:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 0, a: 0.654902}
+    key0: {r: 0, g: 0, b: 0, a: 1}
     key1: {r: 1, g: 0.82967675, b: 0.3537736, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0.63529414}
+    key3: {r: 0, g: 0, b: 0, a: 1}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -90,9 +90,9 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 19661
+    atime0: 0
     atime1: 32960
-    atime2: 47224
+    atime2: 65535
     atime3: 0
     atime4: 0
     atime5: 0
