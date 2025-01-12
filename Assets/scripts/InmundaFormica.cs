@@ -8,51 +8,62 @@ public class InmundaFormica : Entity
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
-
+    [SerializeField] Rigidbody rb;
 
     private NewInputManager inputManager;
-    private bool aggro;
+    private bool canSeeWhenCrouched;
 
     //animation
-    public enum monsterState { Chasing, Idle, Attacking, wandering, wait, searching }
+    public enum monsterState { Chasing, Idle, wandering, wait, searching, alerted }
     public monsterState currentState;
     private float restTimer;
     private float searchTimer;
+    private Transform leapTarget;
     //line of sight 
-    public Transform eyePos;
+    private bool aggro;
+    public float DetectionTime = 3f;
+    private float detectionTimer;
+    private float howlTimer;
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
     bool isInAngle, isInRange, isNotHidden;
 
-    protected void Start()
+    protected void Awake()
     {
         NavAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         currentState = monsterState.Idle;
         player = GameObject.FindWithTag("Player");
         inputManager = player.GetComponent<NewInputManager>();
+        leapTarget = player.transform.Find("mixamorig:Neck");
     }
 
     protected void Update()
     {
 
-        if (canSeePlayer() && currentState != monsterState.searching) currentState = monsterState.Chasing;
+        if (canSeePlayer() && !aggro)
+        {
+            currentState = monsterState.alerted;
+        }
+        if (currentState != monsterState.alerted && detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
 
         switch (currentState)
         {
             case monsterState.Chasing:
-                Chasing();
+                NavAgent.acceleration = 20;
+                anim.speed = 1.5f;
+                NavAgent.autoBraking = false;
+                canSeeWhenCrouched = true;
                 anim.SetBool("isChasing", true);
+                anim.SetBool("isWandering", false);
                 NavAgent.SetDestination(player.transform.position);
+                Chasing();
                 break;
             case monsterState.Idle:
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", false);
+                anim.speed = 1;
                 Idle();
-                break;
-            case monsterState.Attacking:
-                anim.SetBool("isChasing", false);
-                Attacking();
                 break;
             case monsterState.wandering:
                 wandering();
@@ -61,26 +72,70 @@ public class InmundaFormica : Entity
                 wait();
                 break;
             case monsterState.searching:
+                NavAgent.speed = 5;
+                NavAgent.acceleration = 5;
+                NavAgent.autoBraking = true;
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", true);
+                canSeeWhenCrouched = false;
                 Searching();
+                break;
+            case monsterState.alerted:
+                NavAgent.speed = 0;
+                NavAgent.destination = player.transform.position;
+                detectionMeter();
                 break;
         }
     }
 
+    protected void detectionMeter()
+    {
+        if (isInAngle && isInRange && isNotHidden && !aggro)
+        {
+            Vector3 relativePos = player.transform.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.time * 0.005f);
+
+            detectionTimer += Time.deltaTime;
+            if (detectionTimer >= DetectionTime)
+            {
+                detectionTimer = 0;
+                aggro = true;
+                anim.SetTrigger("Howl");
+            }
+        }
+        else if (!isInAngle || !isInRange || !isNotHidden)
+        {
+            currentState = monsterState.searching;
+
+        }
+
+        if (aggro)
+        {
+            howlTimer += Time.deltaTime;
+            if (howlTimer >= 3)
+            {
+                howlTimer = 0;
+                currentState = monsterState.Chasing;
+            }
+        }
+    }
+
+    protected void Leap()
+    {
+        rb.AddForce((leapTarget.position - transform.position) * 10, ForceMode.Impulse);
+    }
+
     protected void Chasing()
     {
-        NavAgent.acceleration = 15;
-        anim.speed = 1;
-        NavAgent.speed = 20;
-        //NavAgent.autoBraking = false;
-        NavAgent.angularSpeed = 300;
-        aggro = true;
-
-        if (NavAgent.remainingDistance <= 1)
+        if (NavAgent.remainingDistance <= 8)
         {
-            currentState = monsterState.Attacking;
+            anim.SetTrigger("Attack");
+            Leap();
+            NavAgent.speed = 0;
         }
+        else NavAgent.speed = 20;
+
 
         if (!canSeePlayer())
         {
@@ -88,8 +143,13 @@ public class InmundaFormica : Entity
         }
     }
 
-
-
+    protected void groundCheck() 
+    { 
+           
+    
+    }
+    
+   
     protected void wait()
     {
         restTimer += Time.deltaTime;
@@ -103,7 +163,6 @@ public class InmundaFormica : Entity
     protected void Idle()
     {
         int random = Random.Range(0, 2);
-        anim.speed = 1;
         switch (random)
         {
             case 0:
@@ -116,13 +175,7 @@ public class InmundaFormica : Entity
                 break;
         }
     }
-    protected void Attacking()
-    {
-        anim.SetTrigger("Attack");
-        NavAgent.speed = 0;
 
-
-    }
 
     protected void wandering()
     {
@@ -139,14 +192,13 @@ public class InmundaFormica : Entity
     protected void Searching()
     {
         searchTimer += Time.deltaTime;
-        if (searchTimer > 3) aggro = false;
         if (searchTimer >= 10)
         {
             searchTimer = 0;
             currentState = monsterState.Idle;
+            aggro = false;
         }
-        //DetectAngle = 180;
-        //DetectRange = 40;
+
 
         if (canSeePlayer())
         {
@@ -154,22 +206,18 @@ public class InmundaFormica : Entity
         }
 
         if (NavAgent.destination == null || NavAgent.remainingDistance < 1) NavAgent.SetDestination(RandomNavmeshLocation(5));
-
-        NavAgent.speed = 2;
-        NavAgent.acceleration = 5;
-        NavAgent.autoBraking = true;
-        anim.SetBool("isWandering", true);
-
     }
+
+
     protected bool canSeePlayer()
     {
         isInAngle = false;
         isInRange = false;
         isNotHidden = false;
 
-        if (inputManager.Crouch && !aggro)
+        if (inputManager.Crouch && !canSeeWhenCrouched)
         {
-            DetectRange = 15;
+            DetectRange = 10;
         }
         else
         {
@@ -179,7 +227,7 @@ public class InmundaFormica : Entity
         if (Vector3.Distance(transform.position, player.transform.position) < DetectRange) isInRange = true;
 
         RaycastHit hit;
-        if (Physics.Raycast(eyePos.position, (player.transform.position - transform.position), out hit, Mathf.Infinity))
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 6, transform.position.z), (player.transform.position - transform.position), out hit, Mathf.Infinity))
         {
             if (hit.transform.gameObject == player) isNotHidden = true;
         }
@@ -192,5 +240,8 @@ public class InmundaFormica : Entity
         if (isInAngle && isInRange && isNotHidden) return true;
         else return false;
 
-    } //https://www.youtube.com/watch?v=kMHwy-unZ5M
+    }
+
+
+
 }

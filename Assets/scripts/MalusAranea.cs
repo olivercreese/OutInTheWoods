@@ -15,7 +15,7 @@ public class MalusAranea : Entity
     private bool canSeeWhenCrouched;
 
     //animation
-    public enum monsterState { Chasing, Idle, wandering, wait, searching}
+    public enum monsterState { Chasing, Idle, wandering, wait, searching,alerted}
     public monsterState currentState;
     private float restTimer;
     private float searchTimer;
@@ -23,6 +23,7 @@ public class MalusAranea : Entity
     private bool aggro;
     public float DetectionTime = 3f;
     private float detectionTimer;
+    private float howlTimer;
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
     bool isInAngle, isInRange, isNotHidden;
@@ -39,29 +40,28 @@ public class MalusAranea : Entity
     protected void Update()
     {
 
-        if (canSeePlayer() && currentState != monsterState.searching && aggro) { 
-             currentState = monsterState.Chasing;
+        if (canSeePlayer() && !aggro) {
+            currentState = monsterState.alerted;
         }
+        if (currentState != monsterState.alerted && detectionTimer >= 0) detectionTimer -= Time.deltaTime/2;
 
-        detectionMeter();
         switch (currentState)
         {
             case monsterState.Chasing:
-                NavAgent.acceleration = 50;
+                NavAgent.acceleration = 20;
                 anim.speed = 1.5f;
                 NavAgent.autoBraking = false;
-                NavAgent.angularSpeed = 60;
                 canSeeWhenCrouched = true;
-                Chasing();
                 anim.SetBool("isChasing", true);
                 anim.SetBool("isWandering", false);
                 NavAgent.SetDestination(player.transform.position);
+                Chasing();
                 break;
             case monsterState.Idle:
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", false);
-                Idle();
                 anim.speed = 1;
+                Idle();
                 break;
             case monsterState.wandering:
                 wandering();
@@ -70,14 +70,18 @@ public class MalusAranea : Entity
                 wait();
                 break;
             case monsterState.searching:
-                NavAgent.speed = 2;
+                NavAgent.speed = 5;
                 NavAgent.acceleration = 5;
                 NavAgent.autoBraking = true;
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", true);
                 canSeeWhenCrouched = false;
-                aggro = false;
                 Searching();
+                break;
+            case monsterState.alerted:
+                NavAgent.speed = 0;
+                NavAgent.destination = player.transform.position;
+                detectionMeter();
                 break;
         }
     }
@@ -86,18 +90,33 @@ public class MalusAranea : Entity
     {
         if (isInAngle && isInRange && isNotHidden && !aggro)
         {
-            currentState = monsterState.wait;
-            
+            Vector3 relativePos = player.transform.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.time * 0.005f);
+
             detectionTimer += Time.deltaTime;
-            transform.LookAt(player.transform.position);
             if (detectionTimer >= DetectionTime)
             {
                 detectionTimer = 0;
                 aggro = true;
+                anim.SetTrigger("Howl");
             }
         }
-        else if (!isInAngle && !isInRange && !isNotHidden && !aggro)
-            detectionTimer -= Time.deltaTime / 2;
+        else if (!isInAngle || !isInRange || !isNotHidden)
+        {
+            currentState = monsterState.searching;
+            
+        }
+
+        if (aggro)
+        {
+            howlTimer += Time.deltaTime;
+            if (howlTimer >= 3)
+            {
+                howlTimer = 0;
+                currentState = monsterState.Chasing;
+            }
+        }
     }
 
     protected void Chasing()
@@ -105,6 +124,7 @@ public class MalusAranea : Entity
         if (NavAgent.remainingDistance <= 2)
         {
             anim.SetTrigger("Attack");
+            
             NavAgent.speed = 0;
         }
         else NavAgent.speed = 20;
@@ -162,6 +182,7 @@ public class MalusAranea : Entity
         {
             searchTimer = 0;
             currentState = monsterState.Idle;
+            aggro = false;
         }
 
 
