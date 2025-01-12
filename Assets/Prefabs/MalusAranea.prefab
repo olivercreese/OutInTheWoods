@@ -1397,7 +1397,7 @@ GameObject:
   - component: {fileID: 1593014181926923052}
   m_Layer: 0
   m_Name: MalusAranea
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1458,6 +1458,7 @@ MonoBehaviour:
   anim: {fileID: 1557284373540754369}
   player: {fileID: 0}
   currentState: 1
+  DetectionTime: 3
   DetectRange: 60
   DetectAngle: 100
 --- !u!195 &1593014181926923052
@@ -2064,9 +2065,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8738369995917302393}
+  - component: {fileID: 419533450172352709}
   m_Layer: 0
   m_Name: IK_hand.L
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2087,6 +2089,29 @@ Transform:
   - {fileID: 1530621298511793658}
   m_Father: {fileID: 1915442669380915666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &419533450172352709
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5451653091952716481}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.13
+  m_Height: 0.51
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.09}
 --- !u!1 &5857792138494300423
 GameObject:
   m_ObjectHideFlags: 0
@@ -2128,9 +2153,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7226692131416831214}
+  - component: {fileID: 9030994976881200177}
   m_Layer: 0
   m_Name: IK_hand.R
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2151,6 +2177,29 @@ Transform:
   - {fileID: 6228026452133116328}
   m_Father: {fileID: 1915442669380915666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &9030994976881200177
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6050934050699768605}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.13
+  m_Height: 0.5
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.09}
 --- !u!1 &6056709091921121068
 GameObject:
   m_ObjectHideFlags: 0

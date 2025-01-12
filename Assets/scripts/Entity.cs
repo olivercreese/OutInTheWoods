@@ -12,15 +12,9 @@ public class Entity : MonoBehaviour
     }
 
 
-    public virtual bool TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            Die();
-            return true;
-        }
-        return false;
     }
 
     public void Die()

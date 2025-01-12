@@ -39,6 +39,11 @@ public class MalusAranea : Entity
 
     protected void Update()
     {
+        if (player.GetComponent<NewPlayerController>().isDead)
+        {
+            anim.SetTrigger("Howl");
+            return;
+        }
 
         if (canSeePlayer() && !aggro) {
             currentState = monsterState.alerted;
@@ -47,7 +52,8 @@ public class MalusAranea : Entity
         switch (currentState)
         {
             case monsterState.Chasing:
-                NavAgent.acceleration = 20;
+                NavAgent.acceleration = 15;
+                NavAgent.speed = 30;
                 anim.speed = 1.5f;
                 NavAgent.autoBraking = false;
                 canSeeWhenCrouched = true;
@@ -123,13 +129,13 @@ public class MalusAranea : Entity
 
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 15)
+        if (NavAgent.remainingDistance <= 5)
         {
             anim.SetTrigger("Attack");
             
             NavAgent.speed = 0;
         }
-        else NavAgent.speed = 20;
+        
 
 
         if (!canSeePlayer())

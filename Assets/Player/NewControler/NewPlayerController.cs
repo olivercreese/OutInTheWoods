@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 //https://www.youtube.com/watch?v=xWHsS7ju3m8 // tutorial link for the controller
 
-public class NewPlayerController : MonoBehaviour
+public class NewPlayerController : Entity
 {
     [SerializeField] private float animBlendSpeed = 8.9f;
     [SerializeField] private Transform CameraRoot;
@@ -25,6 +25,7 @@ public class NewPlayerController : MonoBehaviour
     private Animator animator;
     private bool grounded;
     private bool hasAnimator;
+    public bool isDead;
 
     private int _xVelHash; // Hash for the velocity parameters in the animator
     private int _yVelHash;
@@ -46,7 +47,9 @@ public class NewPlayerController : MonoBehaviour
         hasAnimator = TryGetComponent<Animator>(out animator);
         rb = GetComponent<Rigidbody>();
         inputManager = GetComponent<NewInputManager>();
-
+        maxHealth = 100;
+        currentHealth = maxHealth;
+        isDead = false;
         _xVelHash = Animator.StringToHash("Xvelocity");
         _yVelHash = Animator.StringToHash("Yvelocity");
         jumpHash = Animator.StringToHash("Jump");
@@ -56,17 +59,25 @@ public class NewPlayerController : MonoBehaviour
     }
 
 
+
     private void FixedUpdate()
     {
-        SampleGround();
-        Move();
-        HandleJump();
-        HandleCrouch();
+        if (currentHealth > 0)
+        {
+            SampleGround();
+            Move();
+            HandleJump();
+            HandleCrouch();
+        }
     }
 
     private void LateUpdate()
     {
-        CameraMovement();
+        if (currentHealth > 0) 
+            CameraMovement();
+        else
+            Camera.position = CameraRoot.position;
+
     }
     private void Move()
     {
@@ -158,7 +169,19 @@ public class NewPlayerController : MonoBehaviour
         animator.SetBool(groundHash, grounded);
     }
 
- 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy" && currentHealth > 0 )
+        {
+            TakeDamage(25);
+            if (currentHealth <= 0)
+            {
+                animator.SetTrigger("Death");
+                isDead = true;
+            }
+        }
+    }
+    
 
 
 

@@ -47,6 +47,12 @@ public class InmundaFormica : Entity
     protected void Update()
     {
 
+        if (player.GetComponent<NewPlayerController>().isDead)
+        {
+            anim.SetTrigger("Howl");
+            return;
+        }
+
         if (canSeePlayer() && !aggro)
         {
             currentState = monsterState.alerted;
