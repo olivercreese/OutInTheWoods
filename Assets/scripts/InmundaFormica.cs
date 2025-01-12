@@ -1,4 +1,6 @@
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using static Sheep;
@@ -8,19 +10,23 @@ public class InmundaFormica : Entity
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
-    [SerializeField] Rigidbody rb;
+    //[SerializeField] Rigidbody rb;
+    //[SerializeField] float jumpForce = 1;
+    //[SerializeField] private LayerMask groundLayerCheck;
+
 
     private NewInputManager inputManager;
     private bool canSeeWhenCrouched;
+    //private bool grounded;
 
     //animation
     public enum monsterState { Chasing, Idle, wandering, wait, searching, alerted }
     public monsterState currentState;
     private float restTimer;
     private float searchTimer;
-    private Transform leapTarget;
+    //public Vector3 leapTarget;
     //line of sight 
-    private bool aggro;
+    private bool aggro; 
     public float DetectionTime = 3f;
     private float detectionTimer;
     private float howlTimer;
@@ -35,7 +41,7 @@ public class InmundaFormica : Entity
         currentState = monsterState.Idle;
         player = GameObject.FindWithTag("Player");
         inputManager = player.GetComponent<NewInputManager>();
-        leapTarget = player.transform.Find("mixamorig:Neck");
+        //leapTarget = player.transform.Find("mixamorig:Neck");
     }
 
     protected void Update()
@@ -45,7 +51,6 @@ public class InmundaFormica : Entity
         {
             currentState = monsterState.alerted;
         }
-        if (currentState != monsterState.alerted && detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
 
         switch (currentState)
         {
@@ -60,15 +65,18 @@ public class InmundaFormica : Entity
                 Chasing();
                 break;
             case monsterState.Idle:
+                if (detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", false);
                 anim.speed = 1;
                 Idle();
                 break;
             case monsterState.wandering:
+                if (detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
                 wandering();
                 break;
             case monsterState.wait:
+                if (detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
                 wait();
                 break;
             case monsterState.searching:
@@ -87,6 +95,7 @@ public class InmundaFormica : Entity
                 break;
         }
     }
+
 
     protected void detectionMeter()
     {
@@ -120,18 +129,32 @@ public class InmundaFormica : Entity
             }
         }
     }
-
+    /*
     protected void Leap()
     {
-        rb.AddForce((leapTarget.position - transform.position) * 10, ForceMode.Impulse);
+        leapTarget = new Vector3(player.transform.position.x, player.transform.position.y + 15, player.transform.position.z);
+        Vector3 disp = leapTarget - transform.position;
+        rb.AddForce(Vector3.up * jumpForce * 500000000000000, ForceMode.Impulse);
+        rb.AddForce(disp.normalized * jumpForce, ForceMode.Impulse);
     }
 
+    
+    private void FixedUpdate()
+    {
+        groundCheck();
+        if (grounded)
+        {
+            //rb.AddForce(Vector3.down * 20f, ForceMode.Acceleration);
+        }
+    }
+    */
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 8)
+        if (NavAgent.remainingDistance <= 15 )
         {
             anim.SetTrigger("Attack");
-            Leap();
+            //transform.LookAt(player.transform); 
+            //Leap();
             NavAgent.speed = 0;
         }
         else NavAgent.speed = 20;
@@ -140,15 +163,23 @@ public class InmundaFormica : Entity
         if (!canSeePlayer())
         {
             currentState = monsterState.searching;
+
         }
     }
-
+    /*
     protected void groundCheck() 
-    { 
-           
-    
+    {
+        RaycastHit hitinfo;
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), Vector3.down, out hitinfo, 1, groundLayerCheck))
+        {
+            //grounded
+            grounded = true;
+        }
+        else grounded = false;
+
+        Debug.Log(grounded);
     }
-    
+    */
    
     protected void wait()
     {

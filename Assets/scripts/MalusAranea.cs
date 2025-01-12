@@ -43,7 +43,6 @@ public class MalusAranea : Entity
         if (canSeePlayer() && !aggro) {
             currentState = monsterState.alerted;
         }
-        if (currentState != monsterState.alerted && detectionTimer >= 0) detectionTimer -= Time.deltaTime/2;
 
         switch (currentState)
         {
@@ -58,15 +57,18 @@ public class MalusAranea : Entity
                 Chasing();
                 break;
             case monsterState.Idle:
+                if (detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", false);
                 anim.speed = 1;
                 Idle();
                 break;
             case monsterState.wandering:
+                if (detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
                 wandering();
                 break;
             case monsterState.wait:
+                if (detectionTimer >= 0) detectionTimer -= Time.deltaTime / 2;
                 wait();
                 break;
             case monsterState.searching:
@@ -121,7 +123,7 @@ public class MalusAranea : Entity
 
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 2)
+        if (NavAgent.remainingDistance <= 15)
         {
             anim.SetTrigger("Attack");
             

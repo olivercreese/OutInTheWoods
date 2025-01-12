@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 using UnityEditor.SearchService;
 using Unity.VisualScripting;
 
-//https://www.youtube.com/watch?v=xWHsS7ju3m8
+//https://www.youtube.com/watch?v=xWHsS7ju3m8 // tutorial link for the controller
 
 public class NewPlayerController : MonoBehaviour
 {
@@ -74,7 +74,7 @@ public class NewPlayerController : MonoBehaviour
 
         float targetSpeed = inputManager.Run ? runSpeed : walkSpeed;
 
-        if (inputManager.Crouch) targetSpeed = 1;
+        if (inputManager.Crouch) targetSpeed = 1.5f;
 
         if (inputManager.Move == Vector2.zero) targetSpeed = 0f;
 
