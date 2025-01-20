@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Terrain
   - Pistol
+  - AudioManager
   layers:
   - Default
   - TransparentFX

@@ -87,6 +87,19 @@ public class NewPlayerController : Entity
 
     }
 
+    public void PistolSwap()
+    {
+        if (!hasPistol)
+        {
+            hasPistol=true;
+        }
+        else
+        {
+            hasPistol = false;
+        }
+
+    }
+
     private void HandlePistol()
     {
         if (hasPistol)
@@ -151,7 +164,6 @@ public class NewPlayerController : Entity
         if (!hasAnimator) return;
         if (!inputManager.Jump) return;
         animator.SetTrigger(jumpHash);
-        hasPistol = true;
     }
 
     private void HandleCrouch()

@@ -2,25 +2,21 @@ using UnityEngine;
 
 public class Footsteps : MonoBehaviour
 {
-    [SerializeField] private AudioClip[] footStepSounds;
+    [SerializeField] private AudioClip footStepSound;
     [SerializeField] private AudioSource audioSource;
-    public bool isRunning;
+    private AudioManager audioManager;
+
+    private void Start()
+    {
+        audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+    }
 
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Terrain")
         {
-            if (isRunning)
-            {
-                audioSource.PlayOneShot(footStepSounds[1]);
-            }
-            else
-            {
-                audioSource.PlayOneShot(footStepSounds[0]);
-            }
+           audioManager.PlaySFX(footStepSound,audioSource);
+            
         }
     }
-
-
-
 }

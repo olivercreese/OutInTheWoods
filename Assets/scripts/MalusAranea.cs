@@ -52,7 +52,7 @@ public class MalusAranea : Entity
         switch (currentState)
         {
             case monsterState.Chasing:
-                NavAgent.acceleration = 15;
+                NavAgent.acceleration = 35;
                 NavAgent.speed = 30;
                 anim.speed = 1.5f;
                 NavAgent.autoBraking = false;
@@ -88,7 +88,7 @@ public class MalusAranea : Entity
                 break;
             case monsterState.alerted:
                 NavAgent.speed = 0;
-                NavAgent.destination = player.transform.position;
+                NavAgent.SetDestination(player.transform.position);
                 detectionMeter();
                 break;
         }

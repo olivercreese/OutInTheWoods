@@ -3,18 +3,8 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] AudioSource player;
-    [SerializeField] AudioSource AmbientSound;
-    [SerializeField] AudioSource MalusAranea;
-    [SerializeField] AudioSource InmundaFormica;
-    [SerializeField] AudioSource Sheep;
     private GameObject GM;
-
-
-    public AudioClip Playerwalk;
-    public AudioClip PlayerRun;
-    public AudioClip AmbientSound1;
-    public AudioClip AmbientSound2;
+    [SerializeField] AudioSource ambientSound;
 
     public void Awake()
     {
@@ -25,11 +15,12 @@ public class AudioManager : MonoBehaviour
     {
         if (!src.isPlaying)
             src.PlayOneShot(clip);
+        Debug.Log(src.gameObject.name);
     }
 
     public void PlayAmbientSound(AudioClip clip)
     {
-        AmbientSound.clip = clip;
-        AmbientSound.Play();
+        ambientSound.clip = clip;
+        ambientSound.Play();
     }
 }
