@@ -12,6 +12,8 @@ public class NewInputManager : MonoBehaviour
     public bool Jump { get; private set; }
     public bool Crouch { get; private set; }
     public bool Flashlight { get; private set; }
+    public bool Fire { get; private set; }
+    public bool Reload { get; private set; }
 
     private InputActionMap _currentActionMap;
     private InputAction moveAction;
@@ -20,6 +22,8 @@ public class NewInputManager : MonoBehaviour
     private InputAction jumpAction;
     private InputAction crouchAction;
     private InputAction FlashlightAction;
+    private InputAction fireAction;
+    private InputAction reloadAction;
 
     private bool Flash;
 
@@ -34,6 +38,8 @@ public class NewInputManager : MonoBehaviour
         jumpAction = _currentActionMap.FindAction("Jump");
         crouchAction = _currentActionMap.FindAction("Crouch");
         FlashlightAction = _currentActionMap.FindAction("Flashlight");
+        fireAction = _currentActionMap.FindAction("Fire");
+        reloadAction = _currentActionMap.FindAction("Reload");
 
         moveAction.performed += OnMove;
         lookAction.performed += OnLook;
@@ -41,6 +47,8 @@ public class NewInputManager : MonoBehaviour
         jumpAction.performed += OnJump;
         crouchAction.performed += OnCrouch;
         FlashlightAction.performed += OnFlashlight;
+        fireAction.performed += OnFire;
+        reloadAction.performed += OnReload;
 
         moveAction.canceled += OnMove;
         lookAction.canceled += OnLook;
@@ -48,6 +56,8 @@ public class NewInputManager : MonoBehaviour
         jumpAction.canceled += OnJump;
         crouchAction.canceled += OnCrouch;
         FlashlightAction.canceled += OnFlashlight;
+        fireAction.canceled += OnFire;
+        reloadAction.canceled += OnReload;
 
     }
 
@@ -67,6 +77,15 @@ public class NewInputManager : MonoBehaviour
         Look = context.ReadValue<Vector2>();
     }
 
+    private void OnFire(InputAction.CallbackContext context)
+    {
+
+    }
+    private void OnReload(InputAction.CallbackContext context)
+    {
+
+
+    }
     private void OnFlashlight(InputAction.CallbackContext context)
     {
         Flashlight = context.ReadValueAsButton();

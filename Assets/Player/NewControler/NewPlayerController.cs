@@ -153,7 +153,7 @@ public class NewPlayerController : Entity
         xRotation -= mouseY * MouseSensitivity * Time.smoothDeltaTime;
         xRotation = Mathf.Clamp(xRotation, UpperLimit, LowerLimit);
         Camera.localRotation = Quaternion.Euler(xRotation, 0, 0);
-        if (hasPistol) SpineIK.localRotation = Quaternion.Euler(xRotation, Camera.localRotation.y, 0);
+        if (hasPistol) SpineIK.localRotation = Quaternion.Euler(xRotation, Camera.localRotation.y, Camera.localPosition.z);
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, mouseX * MouseSensitivity * Time.smoothDeltaTime, 0));
         Camera.position = CameraRoot.position;
 
