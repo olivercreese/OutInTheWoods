@@ -10,7 +10,9 @@ public class MalusAranea : Entity
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
-
+    [SerializeField] AudioClip howl;
+    [SerializeField] AudioSource MainAudioSrc;
+    private AudioManager audioManager;
     private NewInputManager inputManager;
     private bool canSeeWhenCrouched;
 
@@ -35,6 +37,8 @@ public class MalusAranea : Entity
         currentState = monsterState.Idle;
         player = GameObject.FindWithTag("Player");
         inputManager = player.GetComponent<NewInputManager>();
+        audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+
     }
 
     protected void Update()
@@ -42,6 +46,7 @@ public class MalusAranea : Entity
         if (player.GetComponent<NewPlayerController>().isDead)
         {
             anim.SetTrigger("Howl");
+            audioManager.PlaySFX(howl, MainAudioSrc);
             return;
         }
 
@@ -108,6 +113,7 @@ public class MalusAranea : Entity
                 detectionTimer = 0;
                 aggro = true;
                 anim.SetTrigger("Howl");
+                audioManager.PlaySFX(howl, MainAudioSrc);
             }
         }
         else if (!isInAngle || !isInRange || !isNotHidden)

@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject InmundaFormica;
     [SerializeField] LightingManager LM;
 
+    public int TreasureCount;
+
     Terrain terrain;
 
     private bool isMonsterSpawned;
@@ -61,6 +63,11 @@ public class GameManager : MonoBehaviour
         if (LM.TimeOfDay > 7 && LM.TimeOfDay < 20 && !isAnimalSpawned)
         {
             SpawnAnimals();
+        }
+
+        if (TreasureCount >= 6)
+        {
+            //win condition
         }
     }
 
