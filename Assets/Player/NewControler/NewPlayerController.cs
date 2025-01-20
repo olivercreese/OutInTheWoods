@@ -19,13 +19,16 @@ public class NewPlayerController : Entity
     [SerializeField] private float Distance2Ground = 0.89f;
     [SerializeField] private LayerMask groundCheck;
     [SerializeField] private float AirResistance = 0.8f;
+    [SerializeField] private Transform SpineIK;
     private Rigidbody rb;
     private NewInputManager inputManager;
+    private GameObject pistol; 
 
     private Animator animator;
     private bool grounded;
     private bool hasAnimator;
     public bool isDead;
+    private bool hasPistol;
 
     private int _xVelHash; // Hash for the velocity parameters in the animator
     private int _yVelHash;
@@ -56,6 +59,8 @@ public class NewPlayerController : Entity
         groundHash = Animator.StringToHash("Grounded");
         fallingHash = Animator.StringToHash("Falling");
         crouchHash = Animator.StringToHash("Crouch");
+        hasPistol = false;
+        pistol = GameObject.FindGameObjectWithTag("Pistol");
     }
 
 
@@ -73,10 +78,27 @@ public class NewPlayerController : Entity
 
     private void LateUpdate()
     {
-        if (currentHealth > 0) 
+        if (currentHealth > 0)
             CameraMovement();
         else
             Camera.position = CameraRoot.position;
+
+        HandlePistol();
+
+    }
+
+    private void HandlePistol()
+    {
+        if (hasPistol)
+        {
+            animator.SetBool("hasPistol", true);
+            pistol.SetActive(true);
+        }
+        else
+        {
+            animator.SetBool("hasPistol", false);
+            pistol.SetActive(false);
+        }
 
     }
     private void Move()
@@ -114,12 +136,14 @@ public class NewPlayerController : Entity
 
         var mouseX = inputManager.Look.x;
         var mouseY = inputManager.Look.y;
-        Camera.position = CameraRoot.position;
 
         xRotation -= mouseY * MouseSensitivity * Time.smoothDeltaTime;
         xRotation = Mathf.Clamp(xRotation, UpperLimit, LowerLimit);
         Camera.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        if (hasPistol) SpineIK.localRotation = Quaternion.Euler(xRotation, Camera.localRotation.y, 0);
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, mouseX * MouseSensitivity * Time.smoothDeltaTime, 0));
+        Camera.position = CameraRoot.position;
+
     }
 
     private void HandleJump()
@@ -127,7 +151,7 @@ public class NewPlayerController : Entity
         if (!hasAnimator) return;
         if (!inputManager.Jump) return;
         animator.SetTrigger(jumpHash);
-
+        hasPistol = true;
     }
 
     private void HandleCrouch()
