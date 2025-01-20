@@ -32,16 +32,16 @@ public class GameManager : MonoBehaviour
             switch (random)
             {
                 case 1:
-                    animalPrefab = Instantiate(whitesheepPrefab, new Vector3(Random.Range(100, 400), 12, Random.Range(100, 400)), Quaternion.identity);
+                    animalPrefab = Instantiate(whitesheepPrefab, new Vector3(Random.Range(-200, 800), 15, Random.Range(-250, 600)), Quaternion.identity);
                     break;
                 case 2:
-                    animalPrefab = Instantiate(blacksheepPrefab, new Vector3(Random.Range(100, 400), 12, Random.Range(100, 400)), Quaternion.identity);
+                    animalPrefab = Instantiate(blacksheepPrefab, new Vector3(Random.Range(-200, 800), 15, Random.Range(-250, 600)), Quaternion.identity);
                     break;
                 case 3:
-                    animalPrefab = Instantiate(goatPrefab, new Vector3(Random.Range(100, 400), 12, Random.Range(100, 400)), Quaternion.identity);
+                    animalPrefab = Instantiate(goatPrefab, new Vector3(Random.Range(-200, 800), 15, Random.Range(-250, 600)), Quaternion.identity);
                     break;
                 default:
-                    animalPrefab = Instantiate(whitesheepPrefab, new Vector3(Random.Range(100, 400), 12, Random.Range(100, 400)), Quaternion.identity);
+                    animalPrefab = Instantiate(whitesheepPrefab, new Vector3(Random.Range(-200, 800), 15, Random.Range(-250, 600)), Quaternion.identity);
                     break;
             }
             animals.Add(animalPrefab);
