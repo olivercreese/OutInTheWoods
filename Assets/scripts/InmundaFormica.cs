@@ -3,28 +3,31 @@ using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
-using static Sheep;
 
 public class InmundaFormica : Entity
 {
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
-    //[SerializeField] Rigidbody rb;
-    //[SerializeField] float jumpForce = 1;
-    //[SerializeField] private LayerMask groundLayerCheck;
-
+    [SerializeField] Rigidbody rb;
+    [SerializeField] float jumpForce = 1;
+    [SerializeField] private LayerMask groundLayerCheck;
+    private AudioManager audioManager;
+    [SerializeField] AudioClip howl;
+    [SerializeField] AudioClip attack;
+    [SerializeField] AudioClip Alert;
+    [SerializeField] AudioSource MainAudioSrc;
 
     private NewInputManager inputManager;
     private bool canSeeWhenCrouched;
-    //private bool grounded;
+    private bool grounded;
 
     //animation
     public enum monsterState { Chasing, Idle, wandering, wait, searching, alerted }
     public monsterState currentState;
     private float restTimer;
     private float searchTimer;
-    //public Vector3 leapTarget;
+    public Vector3 leapTarget;
     //line of sight 
     private bool aggro; 
     public float DetectionTime = 3f;
@@ -32,6 +35,7 @@ public class InmundaFormica : Entity
     private float howlTimer;
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
+    private bool canLeap;
     bool isInAngle, isInRange, isNotHidden;
 
     protected void Awake()
@@ -41,11 +45,16 @@ public class InmundaFormica : Entity
         currentState = monsterState.Idle;
         player = GameObject.FindWithTag("Player");
         inputManager = player.GetComponent<NewInputManager>();
-        //leapTarget = player.transform.Find("mixamorig:Neck");
+        //leapTarget = player.transform.Find("mixamorig:Neck").position;
+        audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     protected void Update()
     {
+        if (!grounded)
+        {
+            return;
+        }
 
         if (player.GetComponent<NewPlayerController>().isDead)
         {
@@ -62,6 +71,7 @@ public class InmundaFormica : Entity
         {
             case monsterState.Chasing:
                 NavAgent.acceleration = 20;
+                NavAgent.speed = 20;
                 anim.speed = 1.5f;
                 NavAgent.autoBraking = false;
                 canSeeWhenCrouched = true;
@@ -96,7 +106,7 @@ public class InmundaFormica : Entity
                 break;
             case monsterState.alerted:
                 NavAgent.speed = 0;
-                NavAgent.destination = player.transform.position;
+                NavAgent.SetDestination(player.transform.position);
                 detectionMeter();
                 break;
         }
@@ -110,6 +120,7 @@ public class InmundaFormica : Entity
             Vector3 relativePos = player.transform.position - transform.position;
             Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.time * 0.005f);
+            audioManager.PlaySFX(Alert, audioManager.playerSFX);
 
             detectionTimer += Time.deltaTime;
             if (detectionTimer >= DetectionTime)
@@ -117,6 +128,7 @@ public class InmundaFormica : Entity
                 detectionTimer = 0;
                 aggro = true;
                 anim.SetTrigger("Howl");
+                audioManager.PlaySFX(howl, MainAudioSrc);
             }
         }
         else if (!isInAngle || !isInRange || !isNotHidden)
@@ -135,32 +147,33 @@ public class InmundaFormica : Entity
             }
         }
     }
-    /*
+    
     protected void Leap()
     {
-        leapTarget = new Vector3(player.transform.position.x, player.transform.position.y + 15, player.transform.position.z);
+        
+        leapTarget = new Vector3(player.transform.position.x, player.transform.position.y + 10, player.transform.position.z);
         Vector3 disp = leapTarget - transform.position;
-        rb.AddForce(Vector3.up * jumpForce * 500000000000000, ForceMode.Impulse);
         rb.AddForce(disp.normalized * jumpForce, ForceMode.Impulse);
     }
 
     
     private void FixedUpdate()
     {
-        groundCheck();
-        if (grounded)
+        if (canLeap)
         {
-            //rb.AddForce(Vector3.down * 20f, ForceMode.Acceleration);
+            NavAgent.enabled = false;
+            Leap();
+            canLeap = false;
         }
+        groundCheck();
     }
-    */
+    
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 15 )
+        if (NavAgent.remainingDistance <= 35 )
         {
-            anim.SetTrigger("Attack");
-            //transform.LookAt(player.transform); 
-            //Leap();
+            audioManager.PlaySFX(attack, MainAudioSrc);
+            canLeap = true;
             NavAgent.speed = 0;
         }
         else NavAgent.speed = 20;
@@ -172,20 +185,26 @@ public class InmundaFormica : Entity
 
         }
     }
-    /*
+    
     protected void groundCheck() 
     {
         RaycastHit hitinfo;
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), Vector3.down, out hitinfo, 1, groundLayerCheck))
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), Vector3.down, out hitinfo, 1, groundLayerCheck))
         {
             //grounded
             grounded = true;
-        }
-        else grounded = false;
+            NavAgent.enabled = true;
 
+        }
+        else
+        {
+            grounded = false;
+            NavAgent.enabled = false;
+        }
         Debug.Log(grounded);
+        Debug.Log(NavAgent.enabled);
     }
-    */
+    
    
     protected void wait()
     {

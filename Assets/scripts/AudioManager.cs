@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
 {
     private GameObject GM;
     [SerializeField] AudioSource ambientSound;
+    public AudioSource playerSFX;
 
     public void Awake()
     {

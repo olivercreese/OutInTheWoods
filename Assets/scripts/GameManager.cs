@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         isMonsterSpawned = false;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 25; i++)
         {
             int random = Random.Range(1, 4);
             GameObject animalPrefab = null;

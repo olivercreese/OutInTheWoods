@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using static Sheep;
 
 public class MalusAranea : Entity
 {
@@ -11,6 +10,8 @@ public class MalusAranea : Entity
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
     [SerializeField] AudioClip howl;
+    [SerializeField] AudioClip attack;
+    [SerializeField] AudioClip Alert;
     [SerializeField] AudioSource MainAudioSrc;
     private AudioManager audioManager;
     private NewInputManager inputManager;
@@ -46,7 +47,6 @@ public class MalusAranea : Entity
         if (player.GetComponent<NewPlayerController>().isDead)
         {
             anim.SetTrigger("Howl");
-            audioManager.PlaySFX(howl, MainAudioSrc);
             return;
         }
 
@@ -57,7 +57,7 @@ public class MalusAranea : Entity
         switch (currentState)
         {
             case monsterState.Chasing:
-                NavAgent.acceleration = 35;
+                NavAgent.acceleration = 40;
                 NavAgent.speed = 30;
                 anim.speed = 1.5f;
                 NavAgent.autoBraking = false;
@@ -106,6 +106,7 @@ public class MalusAranea : Entity
             Vector3 relativePos = player.transform.position - transform.position;
             Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.time * 0.005f);
+            audioManager.PlaySFX(Alert, audioManager.playerSFX);
 
             detectionTimer += Time.deltaTime;
             if (detectionTimer >= DetectionTime)
@@ -138,7 +139,7 @@ public class MalusAranea : Entity
         if (NavAgent.remainingDistance <= 5)
         {
             anim.SetTrigger("Attack");
-            
+            audioManager.PlaySFX(attack, MainAudioSrc);
             NavAgent.speed = 0;
         }
         
@@ -147,6 +148,7 @@ public class MalusAranea : Entity
         if (!canSeePlayer())
         {
             currentState = monsterState.searching;
+
         }
     }
 
