@@ -6304,6 +6304,10 @@ PrefabInstance:
       value: InmundaFormica
       objectReference: {fileID: 0}
     - target: {fileID: 1655651081092022776, guid: 0d579c547066cb14295b9ad7cecadd86, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655651081092022776, guid: 0d579c547066cb14295b9ad7cecadd86, type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}

@@ -5,16 +5,18 @@ public class Sheep : Entity
 {
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
-    
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip[] sheepNoises;
+    private AudioManager audioManager;
 
     public enum  sheepState {Grazing,Fleeing,Idle,Resting,Wandering,wait}
     public sheepState currentState;
 
-    public float grazingTime;
-    public float RestingTime;
-    public float grazeTimer;
-    public float restTimer;
-
+    private float grazingTime;
+    private float RestingTime;
+    private float grazeTimer;
+    private float restTimer;
+    private float soundTimer;
     //public float fleeDistance;
     public float wanderRadius;
 
@@ -24,24 +26,13 @@ public class Sheep : Entity
         NavAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         currentState = sheepState.Idle;
+        audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
     
     // Update is called once per frame
     protected void Update()
     {
-        //flee mechanic not working
-        /*
-        if (Vector3.Distance(player.transform.position, transform.position) <= 3f)
-        {
-            currentState = sheepState.Fleeing;
-            anim.SetBool("isFleeing", true);
-            anim.SetBool("isGrazing", false);
-            anim.SetBool("isResting", false);
-            anim.SetBool("isWandering", false);
-            grazeTimer = 0;
-            restTimer = 0;
-        }
-        */
+ 
 
         switch (currentState)
         {
@@ -61,14 +52,9 @@ public class Sheep : Entity
             case sheepState.wait:
                 idleWait();
                 break;
-               /*
-             case sheepState.Fleeing:
-              NavAgent.speed = 20;
-              Fleeing();
-              break;
-                */
+   
         }
-
+        SheepSounds();
 
     }
 
@@ -83,18 +69,16 @@ public class Sheep : Entity
         }
     }
 
-    /*
-    protected void Fleeing()
+    protected void SheepSounds()
     {
-        if (NavAgent.destination == null) NavAgent.SetDestination(RandomNavmeshLocation(fleeDistance));
-
-        if (NavAgent.remainingDistance <= 0.5f)
+        soundTimer += Time.deltaTime;
+        if (soundTimer >= Random.Range(8, 15))
         {
-            currentState = sheepState.Idle;
-            anim.SetBool("isFleeing", false);
+            soundTimer = 0;
+            audioManager.PlaySFX(sheepNoises[Random.Range(0, sheepNoises.Length)], audioSource);
         }
+
     }
-    */
 
     protected void Idle()
     {
