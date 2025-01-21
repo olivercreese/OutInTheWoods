@@ -2,29 +2,47 @@ using UnityEngine;
 
 public class Helicopter : MonoBehaviour
 {
-    [SerializeField] Transform[] waypoints;
+    [SerializeField] Transform[] Points;
     [SerializeField] float speed = 1.0f;
+    [SerializeField] AudioClip heliSound;
+    [SerializeField] AudioSource audioSource;
+    private AudioManager audioManager;
+    private int pointsIndex;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        FollowWaypoints();  
+        FollowWaypoints();
+        audioManager.PlaySFX(heliSound, audioSource);
     }
 
     void FollowWaypoints()
     {
-        foreach (Transform waypoint in waypoints)
+
+        if (pointsIndex <= Points.Length - 1)
         {
-            while (transform.position != waypoint.position)
+            transform.position = Vector3.MoveTowards(transform.position, Points[pointsIndex].transform.position, speed * Time.deltaTime);
+
+            if (transform.position == Points[pointsIndex].transform.position)
             {
-                transform.position = Vector3.MoveTowards(transform.position, waypoint.position, speed);
+                pointsIndex += 1;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            
         }
     }
 }

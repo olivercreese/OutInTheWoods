@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject goatPrefab;
     [SerializeField] GameObject MalusAranea;
     [SerializeField] GameObject InmundaFormica;
-    [SerializeField] LightingManager LM;
+    public LightingManager LM;
+    private GameObject Helicopter;
+    private AudioManager audioManager;
 
     public int TreasureCount;
 
@@ -22,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     private bool isMonsterSpawned;
     private bool isAnimalSpawned;
+
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -50,6 +54,8 @@ public class GameManager : MonoBehaviour
         }
         isAnimalSpawned = true;
 
+        Helicopter = GameObject.FindWithTag("Helicopter");
+        audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -67,12 +73,16 @@ public class GameManager : MonoBehaviour
 
         if (TreasureCount >= 6)
         {
-            //win condition
+            Helicopter.SetActive(true);
         }
     }
 
+
+
     void SpawnMonsters()
     {
+        audioManager.OnNightTime();
+        audioManager.PlayNightTimeLoop();
         for (int i = 0; i < animals.Count; i++)
         {
             int random = Random.Range(1, 3);
@@ -97,6 +107,8 @@ public class GameManager : MonoBehaviour
 
     void SpawnAnimals()
     {
+        audioManager.OnMorning();
+        audioManager.PlayDayTimeLoop();
         for (int i = 0; i < monsters.Count ; i++)
         {
             int random = Random.Range(1, 4);

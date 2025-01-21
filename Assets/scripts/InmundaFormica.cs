@@ -9,9 +9,9 @@ public class InmundaFormica : Entity
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
-    [SerializeField] Rigidbody rb;
-    [SerializeField] float jumpForce = 1;
-    [SerializeField] private LayerMask groundLayerCheck;
+    //[SerializeField] Rigidbody rb;
+    //[SerializeField] float jumpForce = 1;
+    //[SerializeField] private LayerMask groundLayerCheck;
     private AudioManager audioManager;
     [SerializeField] AudioClip howl;
     [SerializeField] AudioClip attack;
@@ -20,14 +20,14 @@ public class InmundaFormica : Entity
 
     private NewInputManager inputManager;
     private bool canSeeWhenCrouched;
-    private bool grounded;
+    //private bool grounded;
 
     //animation
     public enum monsterState { Chasing, Idle, wandering, wait, searching, alerted }
     public monsterState currentState;
     private float restTimer;
     private float searchTimer;
-    public Vector3 leapTarget;
+   // public Vector3 leapTarget;
     //line of sight 
     private bool aggro; 
     public float DetectionTime = 3f;
@@ -35,7 +35,7 @@ public class InmundaFormica : Entity
     private float howlTimer;
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
-    private bool canLeap;
+    //private bool canLeap;
     bool isInAngle, isInRange, isNotHidden;
 
     protected void Awake()
@@ -45,16 +45,17 @@ public class InmundaFormica : Entity
         currentState = monsterState.Idle;
         player = GameObject.FindWithTag("Player");
         inputManager = player.GetComponent<NewInputManager>();
-        //leapTarget = player.transform.Find("mixamorig:Neck").position;
         audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     protected void Update()
     {
+        /*
         if (!grounded)
         {
             return;
         }
+        */
 
         if (player.GetComponent<NewPlayerController>().isDead)
         {
@@ -147,7 +148,7 @@ public class InmundaFormica : Entity
             }
         }
     }
-    
+    /*
     protected void Leap()
     {
         
@@ -167,13 +168,14 @@ public class InmundaFormica : Entity
         }
         groundCheck();
     }
-    
+    */
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 35 )
+        if (NavAgent.remainingDistance <= 15 )
         {
             audioManager.PlaySFX(attack, MainAudioSrc);
-            canLeap = true;
+            //canLeap = true;
+            anim.SetTrigger("Attack");
             NavAgent.speed = 0;
         }
         else NavAgent.speed = 20;
@@ -185,7 +187,7 @@ public class InmundaFormica : Entity
 
         }
     }
-    
+    /*
     protected void groundCheck() 
     {
         RaycastHit hitinfo;
@@ -204,7 +206,7 @@ public class InmundaFormica : Entity
         Debug.Log(grounded);
         Debug.Log(NavAgent.enabled);
     }
-    
+    */
    
     protected void wait()
     {

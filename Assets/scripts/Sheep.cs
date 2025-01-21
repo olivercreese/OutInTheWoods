@@ -72,7 +72,8 @@ public class Sheep : Entity
     protected void SheepSounds()
     {
         soundTimer += Time.deltaTime;
-        if (soundTimer >= Random.Range(8, 15))
+        int randomValue = Random.Range(8, 60);
+        if (soundTimer >= randomValue)
         {
             soundTimer = 0;
             audioManager.PlaySFX(sheepNoises[Random.Range(0, sheepNoises.Length)], audioSource);

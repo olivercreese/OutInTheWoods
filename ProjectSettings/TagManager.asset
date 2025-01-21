@@ -9,6 +9,7 @@ TagManager:
   - Terrain
   - Pistol
   - AudioManager
+  - Helicopter
   layers:
   - Default
   - TransparentFX

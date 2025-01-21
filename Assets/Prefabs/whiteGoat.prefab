@@ -4736,7 +4736,7 @@ MonoBehaviour:
   maxHealth: 100
   NavAgent: {fileID: 887279112001949689}
   anim: {fileID: 7499573404773519657}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 3002134706765315720}
   sheepNoises:
   - {fileID: 8300000, guid: 2faa2b9c94394104594d9e586e38e9f0, type: 3}
   - {fileID: 8300000, guid: 99a2dbab10c1a3b4d9630be4446f4cd3, type: 3}
@@ -4778,7 +4778,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4822,7 +4822,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.591
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
