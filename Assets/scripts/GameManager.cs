@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject goatPrefab;
     [SerializeField] GameObject MalusAranea;
     [SerializeField] GameObject InmundaFormica;
+    [SerializeField] TMP_Text TreasureText;
     public LightingManager LM;
     private GameObject Helicopter;
     private AudioManager audioManager;
@@ -77,6 +79,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void UpdateText()
+    {
+        TreasureText.text = TreasureCount + "/6";
+    }
 
 
     void SpawnMonsters()

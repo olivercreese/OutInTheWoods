@@ -20,6 +20,7 @@ public class TreasureChest : MonoBehaviour
             treasure.SetActive(false);
             audioManager.PlaySFX(treasureSound, audioSource);
             GM.TreasureCount++;
+            GM.UpdateText();
         }
     }
 
