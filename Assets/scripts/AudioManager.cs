@@ -16,7 +16,6 @@ public class AudioManager : MonoBehaviour
     {
         if (!src.isPlaying)
             src.PlayOneShot(clip);
-        Debug.Log(src.gameObject.name);
     }
 
     public void PlayAmbientSound(AudioClip clip)
