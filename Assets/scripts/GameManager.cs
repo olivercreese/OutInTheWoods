@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     private bool isMonsterSpawned;
     private bool isAnimalSpawned;
-
+   
     private int hours, minutes, seconds;
 
 
@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (GameWon)
         {
             OnWin();
@@ -97,6 +98,8 @@ public class GameManager : MonoBehaviour
         UpdateTimeOfDay();
         UpdatePlayerDamage();
     }
+
+
 
     public void UpdateTreasureText()
     {
