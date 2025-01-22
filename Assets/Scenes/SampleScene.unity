@@ -14383,7 +14383,7 @@ PrefabInstance:
       objectReference: {fileID: 1863364821}
     - target: {fileID: 5453918162957320742, guid: 92648d84b69617a45830ca5105708669, type: 3}
       propertyPath: jumpFactor
-      value: 1800
+      value: 842
       objectReference: {fileID: 0}
     - target: {fileID: 5453918162957320742, guid: 92648d84b69617a45830ca5105708669, type: 3}
       propertyPath: rightArmIK
