@@ -8,12 +8,13 @@ public class MenuManager : MonoBehaviour
     [SerializeField] AudioClip dayTimeLoop;
     [SerializeField] AudioSource ambientSound;
     private LightingManager LM;
-
+    private bool startPressed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         LM = GameObject.FindWithTag("LightingManager").GetComponent<LightingManager>();
+        startPressed = false;
     }
 
     // Update is called once per frame
@@ -35,15 +36,25 @@ public class MenuManager : MonoBehaviour
                 ambientSound.Play();
             }
         }
+
+        if (startPressed)
+        {
+            float fadealpha = FadeToBlack.color.a + Time.deltaTime / 2;
+            FadeToBlack.color = new Color(FadeToBlack.color.r, FadeToBlack.color.g, FadeToBlack.color.b, fadealpha);
+            if (fadealpha >= 1)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            }
+        }
     }
+    public void OnPressExit()
+    {
+        Application.Quit();
+    }
+
 
     public void OnPressStart()
     {
-        float fadealpha = FadeToBlack.color.a + Time.deltaTime / 2;
-        FadeToBlack.color = new Color(FadeToBlack.color.r, FadeToBlack.color.g, FadeToBlack.color.b, fadealpha);
-        if (fadealpha >= 1)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-        }
+        startPressed = true;
     }
 }

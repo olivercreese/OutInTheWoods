@@ -195,7 +195,7 @@ public class NewPlayerController : Entity
         if (!hasAnimator) return;
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z), Vector3.down, out hitInfo, Distance2Ground + 0.1f, groundCheck))
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z), Vector3.down, out hitInfo, Distance2Ground, groundCheck))
         {
             //grounded
             grounded = true;

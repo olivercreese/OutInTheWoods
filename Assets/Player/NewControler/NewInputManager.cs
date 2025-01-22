@@ -6,6 +6,9 @@ using UnityEngine.InputSystem.Interactions;
 public class NewInputManager : MonoBehaviour
 {
     [SerializeField] PlayerInput playerInput;
+    [SerializeField] AudioClip flashOn;
+    [SerializeField] AudioClip flashOff;
+
     public Vector2 Move { get; private set; }
     public Vector2 Look { get; private set; }
     public bool Run { get; private set; }
@@ -24,6 +27,8 @@ public class NewInputManager : MonoBehaviour
     private InputAction FlashlightAction;
     private InputAction fireAction;
     private InputAction reloadAction;
+    private Light light;
+    private AudioManager audioManager;
 
     private bool Flash;
 
@@ -58,7 +63,8 @@ public class NewInputManager : MonoBehaviour
         FlashlightAction.canceled += OnFlashlight;
         fireAction.canceled += OnFire;
         reloadAction.canceled += OnReload;
-
+        light = GameObject.Find("Flashlight").GetComponent<Light>();
+        audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     private void HideCursor()
@@ -89,17 +95,18 @@ public class NewInputManager : MonoBehaviour
     private void OnFlashlight(InputAction.CallbackContext context)
     {
         Flashlight = context.ReadValueAsButton();
-        Light light = GameObject.Find("Flashlight").GetComponent<Light>();
         if (Flash == false)
         {
             Flash = true;
             light.enabled = !light.enabled;
+            audioManager.PlaySFX(flashOn, audioManager.playerSFX);
         }
         else
         {
             Flash = false;
+            audioManager.PlaySFX(flashOff, audioManager.playerSFX);
         }
-     
+
     }
 
     private void OnRun(InputAction.CallbackContext context)
