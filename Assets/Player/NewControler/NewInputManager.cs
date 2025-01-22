@@ -8,6 +8,7 @@ public class NewInputManager : MonoBehaviour
     [SerializeField] PlayerInput playerInput;
     [SerializeField] AudioClip flashOn;
     [SerializeField] AudioClip flashOff;
+    [SerializeField] AudioSource flashLightSource;
 
     public Vector2 Move { get; private set; }
     public Vector2 Look { get; private set; }
@@ -99,12 +100,12 @@ public class NewInputManager : MonoBehaviour
         {
             Flash = true;
             light.enabled = !light.enabled;
-            audioManager.PlaySFX(flashOn, audioManager.playerSFX);
+            audioManager.PlaySFX(flashOn, flashLightSource);
         }
         else
         {
             Flash = false;
-            audioManager.PlaySFX(flashOff, audioManager.playerSFX);
+            audioManager.PlaySFX(flashOff, flashLightSource);
         }
 
     }
