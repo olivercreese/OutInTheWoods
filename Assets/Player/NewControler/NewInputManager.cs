@@ -39,7 +39,7 @@ public class NewInputManager : MonoBehaviour
     private void Awake()
     {
         Flash = false;
-        HideCursor();
+        //HideCursor(); // was preventing mouse working in menu for some reason so commented out
         _currentActionMap = playerInput.currentActionMap; 
         moveAction = _currentActionMap.FindAction("Move"); // find the actions in the action map
         lookAction = _currentActionMap.FindAction("Look");
@@ -74,7 +74,7 @@ public class NewInputManager : MonoBehaviour
     private void HideCursor()
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // lock the cursor to the center of the screen
+        Cursor.lockState = CursorLockMode.Locked; 
     }
 
     private void OnMove(InputAction.CallbackContext context) 
