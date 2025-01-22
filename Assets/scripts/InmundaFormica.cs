@@ -146,7 +146,7 @@ public class InmundaFormica : Entity
     
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 15 )
+        if (NavAgent.remainingDistance <= 5 )
         {
             audioManager.PlaySFX(attack, MainAudioSrc);
             anim.SetTrigger("Attack");

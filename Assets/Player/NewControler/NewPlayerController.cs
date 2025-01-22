@@ -28,7 +28,6 @@ public class NewPlayerController : Entity
     private bool grounded;
     private bool hasAnimator;
     public bool isDead;
-    private bool hasPistol;
 
     private int _xVelHash; // Hash for the velocity parameters in the animator
     private int _yVelHash; 
@@ -37,6 +36,7 @@ public class NewPlayerController : Entity
     private int groundHash; 
     private int fallingHash;
     private int crouchHash;
+    private int aimHash;
     private float xRotation; // x rotation for the camera
 
     private const float walkSpeed = 2.0f;
@@ -60,7 +60,7 @@ public class NewPlayerController : Entity
         groundHash = Animator.StringToHash("Grounded");
         fallingHash = Animator.StringToHash("Falling");
         crouchHash = Animator.StringToHash("Crouch");
-        hasPistol = false;
+        aimHash = Animator.StringToHash("Aim");
         pistol = GameObject.FindGameObjectWithTag("Pistol");
     }
 
@@ -74,6 +74,7 @@ public class NewPlayerController : Entity
             Move();
             HandleJump();
             HandleCrouch();
+            HandlePistol();
         }
     }
 
@@ -84,23 +85,11 @@ public class NewPlayerController : Entity
         else
             Camera.position = CameraRoot.position;
 
-        HandlePistol();
         AutoHeal();
 
     }
 
-    public void PistolSwap() // future implementation for pistol
-    {
-        if (!hasPistol)
-        {
-            hasPistol=true;
-        }
-        else
-        {
-            hasPistol = false;
-        }
-
-    }
+    
 
     private void AutoHeal() // automatically heals the player after 10 seconds of not taking damage
     {
@@ -114,16 +103,7 @@ public class NewPlayerController : Entity
 
     private void HandlePistol() //future implementation for pistol aniamtion layer
     {
-        if (hasPistol)
-        {
-            animator.SetBool("hasPistol", true);
-            pistol.SetActive(true);
-        }
-        else
-        {
-            animator.SetBool("hasPistol", false);
-            pistol.SetActive(false);
-        }
+        animator.SetBool(aimHash, inputManager.Aim); // set the crouch parameter in the animator
 
     }
     private void Move()
@@ -165,7 +145,13 @@ public class NewPlayerController : Entity
         xRotation -= mouseY * MouseSensitivity * Time.smoothDeltaTime; // rotate the camera based on the mouse vertical input 
         xRotation = Mathf.Clamp(xRotation, UpperLimit, LowerLimit); // clamp the rotation to the upper and lower limits 
         Camera.localRotation = Quaternion.Euler(xRotation, 0, 0); // set the camera rotation to the x rotation
-        if (hasPistol) SpineIK.localRotation = Quaternion.Euler(xRotation, Camera.localRotation.y, Camera.localPosition.z); //future implementation for pistol aiming
+        /*
+        if (inputManager.isAiming)
+        {
+            Camera.rotation = Quaternion.Euler(xRotation, CameraRoot.rotation.eulerAngles.y, CameraRoot.rotation.eulerAngles.z); // lock the camera rotation to the y axis when aiming
+            SpineIK.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        } //future implementation for pistol aiming
+        */
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, mouseX * MouseSensitivity * Time.smoothDeltaTime, 0)); // rotate the players y axis based on the mouse horizontal input
         Camera.position = CameraRoot.position;
 

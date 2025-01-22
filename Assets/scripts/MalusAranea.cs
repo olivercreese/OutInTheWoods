@@ -12,8 +12,8 @@ using UnityEngine.AI;
 
 public class MalusAranea : Entity
 {
-    [SerializeField] NavMeshAgent NavAgent; 
-    [SerializeField] Animator anim; 
+    [SerializeField] NavMeshAgent NavAgent;
+    [SerializeField] Animator anim;
     [SerializeField] GameObject player;
     [SerializeField] AudioClip howl;
     [SerializeField] AudioClip attack;
@@ -143,7 +143,7 @@ public class MalusAranea : Entity
 
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 5)
+        if (NavAgent.remainingDistance <= 10)
         {
             anim.SetTrigger("Attack"); // plays the attack animation when the player is within range 
             audioManager.PlaySFX(attack, MainAudioSrc); // plays the attack sound 

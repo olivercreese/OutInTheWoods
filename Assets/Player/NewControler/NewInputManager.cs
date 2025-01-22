@@ -12,6 +12,7 @@ public class NewInputManager : MonoBehaviour
     [SerializeField] AudioClip flashOn;
     [SerializeField] AudioClip flashOff;
     [SerializeField] AudioSource flashLightSource;
+    [SerializeField] Weapon weapon;
 
     public Vector2 Move { get; private set; } // movement values from the input system
     public Vector2 Look { get; private set; } 
@@ -21,6 +22,7 @@ public class NewInputManager : MonoBehaviour
     public bool Flashlight { get; private set; }
     public bool Fire { get; private set; }
     public bool Reload { get; private set; }
+    public bool Aim { get; private set; }
 
     private InputActionMap _currentActionMap; // current action map for the player input
     private InputAction moveAction;
@@ -29,17 +31,18 @@ public class NewInputManager : MonoBehaviour
     private InputAction jumpAction;
     private InputAction crouchAction;
     private InputAction FlashlightAction;
+    private InputAction aimAction;
     private InputAction fireAction;
-    private InputAction reloadAction;
     private Light light; // flashlight light
     private AudioManager audioManager;
 
     private bool Flash; // flashlight on or off
+    public bool isAiming; // aiming or not
 
     private void Awake()
     {
         Flash = false;
-        //HideCursor(); // was preventing mouse working in menu for some reason so commented out
+        HideCursor(); 
         _currentActionMap = playerInput.currentActionMap; 
         moveAction = _currentActionMap.FindAction("Move"); // find the actions in the action map
         lookAction = _currentActionMap.FindAction("Look");
@@ -48,7 +51,7 @@ public class NewInputManager : MonoBehaviour
         crouchAction = _currentActionMap.FindAction("Crouch");
         FlashlightAction = _currentActionMap.FindAction("Flashlight");
         fireAction = _currentActionMap.FindAction("Fire");
-        reloadAction = _currentActionMap.FindAction("Reload");
+        aimAction = _currentActionMap.FindAction("Aim");
 
         moveAction.performed += OnMove; // add the performed and canceled events to the actions
         lookAction.performed += OnLook;
@@ -57,7 +60,7 @@ public class NewInputManager : MonoBehaviour
         crouchAction.performed += OnCrouch;
         FlashlightAction.performed += OnFlashlight;
         fireAction.performed += OnFire;
-        reloadAction.performed += OnReload;
+        aimAction.performed += OnAim;
 
         moveAction.canceled += OnMove;
         lookAction.canceled += OnLook;
@@ -66,7 +69,7 @@ public class NewInputManager : MonoBehaviour
         crouchAction.canceled += OnCrouch;
         FlashlightAction.canceled += OnFlashlight;
         fireAction.canceled += OnFire;
-        reloadAction.canceled += OnReload;
+        aimAction.canceled += OnAim;
         light = GameObject.Find("Flashlight").GetComponent<Light>();
         audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
@@ -81,7 +84,18 @@ public class NewInputManager : MonoBehaviour
     {
         Move = context.ReadValue<Vector2>(); // reads the value of the input and assigns it to the move vector
     }
-
+    private void OnAim(InputAction.CallbackContext context)
+    {
+        //Aim = context.ReadValueAsButton();
+        if (Aim == true)
+        {
+            isAiming = true;
+        }
+        else
+        {
+            isAiming = false;
+        }
+    }
     private void OnLook(InputAction.CallbackContext context)
     {
         Look = context.ReadValue<Vector2>(); 
@@ -89,12 +103,10 @@ public class NewInputManager : MonoBehaviour
 
     private void OnFire(InputAction.CallbackContext context)
     {
-        //future implementation for firing the weapon
+        Fire = context.ReadValueAsButton();
+        //weapon.Shoot();
     }
-    private void OnReload(InputAction.CallbackContext context)
-    {
-        //future implementation for reloading the weapon
-    }
+
     private void OnFlashlight(InputAction.CallbackContext context)
     {
         Flashlight = context.ReadValueAsButton(); 

@@ -223,20 +223,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 0
   NavAgent: {fileID: 4294668979420105844}
   anim: {fileID: 7208271673479795997}
   player: {fileID: 0}
-  rb: {fileID: 0}
-  jumpForce: 1
-  groundLayerCheck:
-    serializedVersion: 2
-    m_Bits: 64
   howl: {fileID: 8300000, guid: b936a908f18950546bb6d6b1d37647c5, type: 3}
   attack: {fileID: 8300000, guid: f4e8a7383ebf4904b90c10da03bc2ad9, type: 3}
   Alert: {fileID: 8300000, guid: 44a7898edb395474c8077ac8e83a072b, type: 3}
   MainAudioSrc: {fileID: 7713524111933031678}
   currentState: 1
-  leapTarget: {x: 0, y: 0, z: 0}
   DetectionTime: 3
   DetectRange: 60
   DetectAngle: 60
@@ -875,7 +870,7 @@ GameObject:
   - component: {fileID: 6095314662426839226}
   m_Layer: 0
   m_Name: CATRigLArmDigit11
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1138,7 +1133,7 @@ GameObject:
   - component: {fileID: 6447468765251971683}
   m_Layer: 0
   m_Name: CATRigRArmDigit11
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

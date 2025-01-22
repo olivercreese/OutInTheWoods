@@ -15,7 +15,8 @@ public class MenuManager : MonoBehaviour
     {
         LM = GameObject.FindWithTag("LightingManager").GetComponent<LightingManager>();
         startPressed = false;
-        Time.timeScale = 1;  
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame

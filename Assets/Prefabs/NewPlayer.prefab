@@ -24,12 +24,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4392731234164118083}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000014901161, y: -1.04221284e-10, z: -8.917894e-12, w: 1}
-  m_LocalPosition: {x: -0.00005006054, y: 0.06454062, z: 0.28116623}
+  m_LocalRotation: {x: 0.000000018626451, y: -1.04221284e-10, z: -8.917894e-12, w: 1}
+  m_LocalPosition: {x: -0.00199978, y: -0.12192889, z: 0.04092429}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6053676153514910552}
+  m_Father: {fileID: 9033012789829527478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9211697768417748352
 GameObject:
@@ -201,7 +201,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ba9d8c7273ed52b47a81f3303da5e1d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3602789654775446537}
-    - targetCorrespondingSourceObject: {fileID: -3321919801592875672, guid: ba9d8c7273ed52b47a81f3303da5e1d3, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8700783698680967558, guid: ba9d8c7273ed52b47a81f3303da5e1d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3705625780332206222}
     m_AddedComponents:
@@ -323,12 +323,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed135d1e1970b59458f237cc5ecf240c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
   animBlendSpeed: 8.9
   CameraRoot: {fileID: 3705625780332206222}
   Camera: {fileID: 3602789654775446537}
   UpperLimit: -40
   LowerLimit: 70
   MouseSensitivity: 21.9
+  jumpFactor: 260
+  Distance2Ground: 0.89
+  groundCheck:
+    serializedVersion: 2
+    m_Bits: 0
+  AirResistance: 0.8
+  SpineIK: {fileID: 0}
+  isDead: 0
 --- !u!114 &27821384686384954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,8 +352,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 4661845535876680017}
---- !u!4 &6053676153514910552 stripped
+  flashOn: {fileID: 0}
+  flashOff: {fileID: 0}
+  flashLightSource: {fileID: 0}
+--- !u!4 &9033012789829527478 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: ba9d8c7273ed52b47a81f3303da5e1d3, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8700783698680967558, guid: ba9d8c7273ed52b47a81f3303da5e1d3, type: 3}
   m_PrefabInstance: {fileID: 424695064178595376}
   m_PrefabAsset: {fileID: 0}
