@@ -7,25 +7,25 @@ using UnityEditor.ShaderKeywordFilter;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine.UI;
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour 
 {
 
-    List<GameObject> animals = new List<GameObject>();
+    List<GameObject> animals = new List<GameObject>(); //lists for storing the animals and monsters
     List<GameObject> monsters = new List<GameObject>();
 
-    [SerializeField] GameObject blacksheepPrefab;
+    [SerializeField] GameObject blacksheepPrefab; //prefabs for the animals and monsters
     [SerializeField] GameObject whitesheepPrefab;
     [SerializeField] GameObject goatPrefab;
-    [SerializeField] GameObject MalusAranea;
+    [SerializeField] GameObject MalusAranea; 
     [SerializeField] GameObject InmundaFormica;
-    [SerializeField] GameObject Helicopter;
-    [SerializeField] TMP_Text TreasureText;
-    [SerializeField] TMP_Text TimeOfDayText;
-    [SerializeField] Image bloodEffect;
-    [SerializeField] Image FadeToBlack;
-    public LightingManager LM;
-    private AudioManager audioManager;
-    private GameObject player;
+    [SerializeField] GameObject Helicopter; //helicopter prefab for the end of the game
+    [SerializeField] TMP_Text TreasureText; //text for the treasure count
+    [SerializeField] TMP_Text TimeOfDayText; //text for the time of day
+    [SerializeField] Image bloodEffect; //image for the blood effect
+    [SerializeField] Image FadeToBlack; //image for the fade to black effect
+    public LightingManager LM; //lighting manager for direct access to the time of day
+    private AudioManager audioManager; //audio manager for playing the night and day time loops
+    private GameObject player;  
 
     public int TreasureCount;
     public bool GameWon;
@@ -35,19 +35,18 @@ public class GameManager : MonoBehaviour
     private bool isMonsterSpawned;
     private bool isAnimalSpawned;
    
-    private int hours, minutes, seconds;
 
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        isMonsterSpawned = false;
-        for (int i = 0; i < 25; i++)
+        isMonsterSpawned = false; // monster spawn flag set to false
+        for (int i = 0; i < 25; i++) //loop for spawning the animals
         {
-            int random = UnityEngine.Random.Range(1, 4);
+            int random = UnityEngine.Random.Range(1, 4); //random number for the animal type
             GameObject animalPrefab = null;
-            switch (random)
+            switch (random) //switch case for the animal type spawns animals at random locations
             {
                 case 1:
                     animalPrefab = Instantiate(whitesheepPrefab, new Vector3(UnityEngine.Random.Range(-200, 800), 15, UnityEngine.Random.Range(-250, 600)), Quaternion.identity);
@@ -64,10 +63,9 @@ public class GameManager : MonoBehaviour
             }
             animals.Add(animalPrefab);
         }
-        isAnimalSpawned = true;
+        isAnimalSpawned = true; //animal spawn flag set to true when finished
 
-        LM.TimeOfDay = 12.0f;
-        hours = 12;
+        LM.TimeOfDay = 12.0f; 
         player = GameObject.FindWithTag("Player");
         audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
@@ -78,25 +76,25 @@ public class GameManager : MonoBehaviour
 
         if (GameWon)
         {
-            OnWin();
+            OnWin(); 
         }
         if (LM.TimeOfDay > 20 && !isMonsterSpawned)
         {
-            SpawnMonsters();
+            SpawnMonsters(); // spawns monsters after 8pm
         }
 
         if (LM.TimeOfDay > 7 && LM.TimeOfDay < 20 && !isAnimalSpawned)
         {
-            SpawnAnimals();
+            SpawnAnimals(); //spawns animals after 7am
         }
 
         if (TreasureCount >= 6)
         {
-            Helicopter.SetActive(true);
+            Helicopter.SetActive(true); //activates the helicopter when all the treasure is collected
         }
         
-        UpdateTimeOfDay();
-        UpdatePlayerDamage();
+        UpdateTimeOfDay(); //updates the time of day text on the screen
+        UpdatePlayerDamage(); //updates the blood effect on the screen
     }
 
 
@@ -136,21 +134,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public string FormatTime(float timeOfDay)
+    public string FormatTime(float timeOfDay) //formats the time of day to a string
     {
-        int hours = (int)timeOfDay;
-        int minutes = (int)((timeOfDay - hours) * 60);
+        int hours = (int)timeOfDay; 
+        int minutes = (int)((timeOfDay - hours) * 60); //calculates the minutes
 
-        TimeSpan time = new TimeSpan(hours, minutes, 0);
-        return time.ToString(@"hh\:mm");
+        TimeSpan time = new TimeSpan(hours, minutes, 0); //creates a new timespan object with the hours and minutes 
+        return time.ToString(@"hh\:mm"); //returns the time in the format hh:mm
     }
     public void OnDeath()
     {
-        float fadealpha = FadeToBlack.color.a + Time.deltaTime / 2;
+        float fadealpha = FadeToBlack.color.a + Time.deltaTime / 2; //reducing the alpha value for the fade to black image
         FadeToBlack.color = new Color(FadeToBlack.color.r, FadeToBlack.color.g, FadeToBlack.color.b, fadealpha);
         if (fadealpha >= 1)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0); //loads the main menu scene 
         }
     }
 
@@ -166,14 +164,14 @@ public class GameManager : MonoBehaviour
     }
     void SpawnMonsters()
     {
-        audioManager.OnNightTime();
-        audioManager.PlayNightTimeLoop();
-        for (int i = 0; i < animals.Count; i++)
+        audioManager.OnNightTime(); //plays the night time audio
+        audioManager.PlayNightTimeLoop(); //plays the ambient night time loop
+        for (int i = 0; i < animals.Count; i++) 
         {
             int random = UnityEngine.Random.Range(1, 3);
             GameObject monsterPrefab = null;
             if (animals[i] == null) continue;
-            switch (random)
+            switch (random) //switch case for the monster type spawns monsters at the animal locations
             {
                 case 1:
                     monsterPrefab = Instantiate(MalusAranea, animals[i].transform.position, Quaternion.identity);
@@ -182,12 +180,12 @@ public class GameManager : MonoBehaviour
                     monsterPrefab = Instantiate(InmundaFormica, animals[i].transform.position, Quaternion.identity);
                     break;
             }
-            animals[i].GetComponent<Entity>().Die();
-            monsters.Add(monsterPrefab);
+            animals[i].GetComponent<Entity>().Die(); //kills the animal
+            monsters.Add(monsterPrefab); //adds the monster to the list
         }
-        animals.Clear();
+        animals.Clear(); //clears the animal list
         isMonsterSpawned = true;
-        isAnimalSpawned = false;
+        isAnimalSpawned = false; //sets flags
     }
 
     void SpawnAnimals()

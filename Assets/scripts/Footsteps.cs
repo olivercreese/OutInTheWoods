@@ -13,7 +13,7 @@ public class Footsteps : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Terrain")
+        if (other.gameObject.tag == "Terrain") // if the feet collider collides with the terrain object
         {
            audioManager.PlaySFX(footStepSound,audioSource);
             

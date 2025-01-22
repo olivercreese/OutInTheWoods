@@ -1,17 +1,19 @@
 using UnityEngine;
 using UnityEngine.AI;
-
+/////SHEEP/////
+// This class is the AI for the Sheep enemy
+// it inherits from the base class Entity
 public class Sheep : Entity
 {
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
     [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip[] sheepNoises;
+    [SerializeField] AudioClip[] sheepNoises; // array of sheep noises
     private AudioManager audioManager;
-
+    //animation
     public enum  sheepState {Grazing,Fleeing,Idle,Resting,Wandering,wait}
     public sheepState currentState;
-
+    //Timers
     private float grazingTime;
     private float RestingTime;
     private float grazeTimer;
@@ -34,7 +36,7 @@ public class Sheep : Entity
     {
  
 
-        switch (currentState)
+        switch (currentState) //switch statement for the sheep states 
         {
             case sheepState.Grazing:
                 Grazing();
@@ -60,7 +62,7 @@ public class Sheep : Entity
 
     protected void Grazing()
     {
-        grazeTimer += Time.deltaTime;
+        grazeTimer += Time.deltaTime; //plays the grazing animation for a set amount of time
         if (grazeTimer >= grazingTime)
         {
             grazeTimer = 0;
@@ -72,8 +74,8 @@ public class Sheep : Entity
     protected void SheepSounds()
     {
         soundTimer += Time.deltaTime;
-        int randomValue = Random.Range(8, 60);
-        if (soundTimer >= randomValue)
+        int randomValue = Random.Range(8, 60); 
+        if (soundTimer >= randomValue) // at random intervals the sheep will play a random noise from the array
         {
             soundTimer = 0;
             audioManager.PlaySFX(sheepNoises[Random.Range(0, sheepNoises.Length)], audioSource);
@@ -81,27 +83,27 @@ public class Sheep : Entity
 
     }
 
-    protected void Idle()
+    protected void Idle() // the idle state plays as a base state for the sheep to swap between other states
     {
         int randomValue = Random.Range(1, 7);
-        if (randomValue != 2) anim.SetBool("isResting", false);
+        if (randomValue != 2) anim.SetBool("isResting", false); // avoids the sheep getting up from resting then going back to resting
         switch (randomValue)
         {
             case 1:
                 currentState = sheepState.Grazing;
-                anim.SetBool("isGrazing", true);
+                anim.SetBool("isGrazing", true); //plays the grazing animation
                 break;
             case 2:
                 currentState = sheepState.Resting;
-                anim.SetBool("isResting", true);
+                anim.SetBool("isResting", true); //plays the resting animation
                 break;
             case 3:
                 currentState = sheepState.wait;
                 break;
             default:
                 currentState = sheepState.Wandering;
-                anim.SetBool("isWandering", true);
-                NavAgent.SetDestination(RandomNavmeshLocation(wanderRadius));
+                anim.SetBool("isWandering", true); //plays the wandering animation
+                NavAgent.SetDestination(RandomNavmeshLocation(wanderRadius)); //sets the destination to a random location in the wander radius
                 break;
         }
         

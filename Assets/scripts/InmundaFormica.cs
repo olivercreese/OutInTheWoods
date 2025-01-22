@@ -4,14 +4,17 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 
+//////////////INMUNDA FORMICA/////////////////////
+//this class is the AI for the Inmunda Formica enemy
+// it inherits from the base class Entity  
+// it is similar to the Malus Aranea class but with slight differences 
+// comments for the class can be found in the Malus Aranea class as they are similar 
+// Leap attack is not implemented in this class but can be added in the future
 public class InmundaFormica : Entity
 {
     [SerializeField] NavMeshAgent NavAgent;
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
-    //[SerializeField] Rigidbody rb;
-    //[SerializeField] float jumpForce = 1;
-    //[SerializeField] private LayerMask groundLayerCheck;
     private AudioManager audioManager;
     [SerializeField] AudioClip howl;
     [SerializeField] AudioClip attack;
@@ -20,23 +23,21 @@ public class InmundaFormica : Entity
 
     private NewInputManager inputManager;
     private bool canSeeWhenCrouched;
-    //private bool grounded;
 
     //animation
     public enum monsterState { Chasing, Idle, wandering, wait, searching, alerted }
     public monsterState currentState;
+    //Timers
     private float restTimer;
     private float searchTimer;
-   // public Vector3 leapTarget;
-    //line of sight 
-    private bool aggro; 
-    public float DetectionTime = 3f;
     private float detectionTimer;
     private float playerUnseenTimer;
     private float howlTimer;
+    //line of sight 
+    private bool aggro;
+    public float DetectionTime = 3f;
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
-    //private bool canLeap;
     bool isInAngle, isInRange, isNotHidden;
 
     protected void Awake()
@@ -49,18 +50,13 @@ public class InmundaFormica : Entity
         audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
-    protected void Update()
+    protected void Update() 
     {
-        /*
-        if (!grounded)
-        {
-            return;
-        }
-        */
+
 
         if (player.GetComponent<NewPlayerController>().isDead)
         {
-            anim.SetTrigger("Howl");
+            anim.SetTrigger("Howl"); 
             return;
         }
 
@@ -147,33 +143,12 @@ public class InmundaFormica : Entity
             }
         }
     }
-    /*
-    protected void Leap()
-    {
-        
-        leapTarget = new Vector3(player.transform.position.x, player.transform.position.y + 10, player.transform.position.z);
-        Vector3 disp = leapTarget - transform.position;
-        rb.AddForce(disp.normalized * jumpForce, ForceMode.Impulse);
-    }
-
     
-    private void FixedUpdate()
-    {
-        if (canLeap)
-        {
-            NavAgent.enabled = false;
-            Leap();
-            canLeap = false;
-        }
-        groundCheck();
-    }
-    */
     protected void Chasing()
     {
         if (NavAgent.remainingDistance <= 15 )
         {
             audioManager.PlaySFX(attack, MainAudioSrc);
-            //canLeap = true;
             anim.SetTrigger("Attack");
             NavAgent.speed = 0;
         }
@@ -197,26 +172,7 @@ public class InmundaFormica : Entity
         }
         else return false;
     }
-    /*
-    protected void groundCheck() 
-    {
-        RaycastHit hitinfo;
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), Vector3.down, out hitinfo, 1, groundLayerCheck))
-        {
-            //grounded
-            grounded = true;
-            NavAgent.enabled = true;
-
-        }
-        else
-        {
-            grounded = false;
-            NavAgent.enabled = false;
-        }
-        Debug.Log(grounded);
-        Debug.Log(NavAgent.enabled);
-    }
-    */
+   
 
     protected void wait()
     {

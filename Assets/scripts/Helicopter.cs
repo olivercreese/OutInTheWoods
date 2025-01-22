@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Helicopter : MonoBehaviour
 {
-    [SerializeField] Transform[] Points;
+    [SerializeField] Transform[] Points; // array of waypoints for the helicopter to follow
     [SerializeField] float speed = 1.0f;
     [SerializeField] AudioClip heliSound;
     [SerializeField] AudioSource audioSource;
@@ -22,20 +22,20 @@ public class Helicopter : MonoBehaviour
     void Update()
     {
 
-        FollowWaypoints();
-        audioManager.PlaySFX(heliSound, audioSource);
+        FollowWaypoints(); 
+        audioManager.PlaySFX(heliSound, audioSource); // play the helicopter sound
     }
 
     void FollowWaypoints()
     {
 
-        if (pointsIndex <= Points.Length - 1)
+        if (pointsIndex <= Points.Length - 1) // if the points index is less than the length of the points array
         {
-            transform.position = Vector3.MoveTowards(transform.position, Points[pointsIndex].transform.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, Points[pointsIndex].transform.position, speed * Time.deltaTime); // move the helicopter towards the next waypoint
 
-            if (transform.position == Points[pointsIndex].transform.position)
+            if (transform.position == Points[pointsIndex].transform.position) // if the helicopter reaches the waypoint
             {
-                pointsIndex += 1;
+                pointsIndex += 1; // move to the next waypoint
             }
         }
     }
@@ -44,7 +44,7 @@ public class Helicopter : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            GM.GameWon = true;
+            GM.GameWon = true; // set the game won bool to true when the player reaches the helicopter
         }
     }
 }

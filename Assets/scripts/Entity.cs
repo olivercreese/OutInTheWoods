@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Entity : MonoBehaviour
-{
-
+{ 
+    //base class for all entities in the game
     public int maxHealth;
     public float currentHealth;
     void Start()
@@ -31,7 +31,7 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public Vector3 RandomNavmeshLocation(float radius)
+    public Vector3 RandomNavmeshLocation(float radius) // used for ai to get a random location on the navmesh
     {
         Vector3 randomDirection = Random.insideUnitSphere * radius;
         randomDirection += transform.position;

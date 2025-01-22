@@ -9,26 +9,27 @@ public class MenuManager : MonoBehaviour
     [SerializeField] AudioSource ambientSound;
     private LightingManager LM;
     private bool startPressed;
+    //lightweight manager class that handles the menu screen and the audio 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         LM = GameObject.FindWithTag("LightingManager").GetComponent<LightingManager>();
         startPressed = false;
+        Time.timeScale = 1;  
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (LM.TimeOfDay > 20)
+        if (LM.TimeOfDay > 20) //if the time of day is greater than 20 play the night time loop
         {
             ambientSound.clip = nightTimeLoop;
-            if (!ambientSound.isPlaying)
+            if (!ambientSound.isPlaying) 
             {
                 ambientSound.Play();
             }
         }
-        else if (LM.TimeOfDay > 6)
+        else if (LM.TimeOfDay > 6) //if the time of day is greater than 6 play the day time loop
         {
             ambientSound.clip = dayTimeLoop;
             if (!ambientSound.isPlaying)
@@ -37,7 +38,7 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-        if (startPressed)
+        if (startPressed) //if the start button is pressed fade to black and load the game scene
         {
             float fadealpha = FadeToBlack.color.a + Time.deltaTime / 2;
             FadeToBlack.color = new Color(FadeToBlack.color.r, FadeToBlack.color.g, FadeToBlack.color.b, fadealpha);
@@ -49,12 +50,12 @@ public class MenuManager : MonoBehaviour
     }
     public void OnPressExit()
     {
-        Application.Quit();
+        Application.Quit(); //exit the application
     }
 
 
     public void OnPressStart()
     {
-        startPressed = true;
+        startPressed = true; //set the start pressed bool to true when the start button is pressed
     }
 }
