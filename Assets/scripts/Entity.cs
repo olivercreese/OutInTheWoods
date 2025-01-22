@@ -5,7 +5,7 @@ public class Entity : MonoBehaviour
 {
 
     public int maxHealth;
-    protected int currentHealth;
+    public float currentHealth;
     void Start()
     {
         currentHealth = maxHealth;
@@ -22,7 +22,7 @@ public class Entity : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Heal(int amount)
+    public void Heal(float amount)
     {
         currentHealth += amount;
         if (currentHealth > maxHealth)

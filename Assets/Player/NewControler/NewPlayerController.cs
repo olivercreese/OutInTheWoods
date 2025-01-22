@@ -41,6 +41,7 @@ public class NewPlayerController : Entity
 
     private const float walkSpeed = 2.0f;
     private const float runSpeed = 6.0f;
+    private float healTimer;
     private float AirTime;
 
     private Vector2 currentVelocity;
@@ -84,6 +85,7 @@ public class NewPlayerController : Entity
             Camera.position = CameraRoot.position;
 
         HandlePistol();
+        AutoHeal();
 
     }
 
@@ -98,6 +100,16 @@ public class NewPlayerController : Entity
             hasPistol = false;
         }
 
+    }
+
+    private void AutoHeal()
+    {
+        if (currentHealth >= maxHealth) return;
+        healTimer += Time.deltaTime;
+        if (healTimer >= 10)
+        {
+            Heal(0.5f);
+        }
     }
 
     private void HandlePistol()
@@ -210,6 +222,7 @@ public class NewPlayerController : Entity
         if (other.tag == "Enemy" && currentHealth > 0 )
         {
             TakeDamage(25);
+            healTimer = 0;
             if (currentHealth <= 0)
             {
                 animator.SetTrigger("Death");

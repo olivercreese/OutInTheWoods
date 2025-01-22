@@ -32,6 +32,7 @@ public class InmundaFormica : Entity
     private bool aggro; 
     public float DetectionTime = 3f;
     private float detectionTimer;
+    private float playerUnseenTimer;
     private float howlTimer;
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
@@ -181,11 +182,22 @@ public class InmundaFormica : Entity
         else NavAgent.speed = 20;
 
 
-        if (!canSeePlayer())
+        if (!canSeePlayer() && playerUnseen())
         {
             currentState = monsterState.searching;
 
         }
+    }
+
+    protected bool playerUnseen()
+    {
+        playerUnseenTimer += Time.deltaTime;
+        if (playerUnseenTimer >= 2)
+        {
+            playerUnseenTimer = 0;
+            return true;
+        }
+        else return false;
     }
     /*
     protected void groundCheck() 
@@ -207,7 +219,7 @@ public class InmundaFormica : Entity
         Debug.Log(NavAgent.enabled);
     }
     */
-   
+
     protected void wait()
     {
         restTimer += Time.deltaTime;

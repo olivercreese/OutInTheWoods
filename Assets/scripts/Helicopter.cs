@@ -6,6 +6,7 @@ public class Helicopter : MonoBehaviour
     [SerializeField] float speed = 1.0f;
     [SerializeField] AudioClip heliSound;
     [SerializeField] AudioSource audioSource;
+    [SerializeField] GameManager GM;
     private AudioManager audioManager;
     private int pointsIndex;
 
@@ -13,6 +14,7 @@ public class Helicopter : MonoBehaviour
     void Start()
     {
         audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+        GM = GameObject.Find("GameManager").GetComponent<GameManager>();
 
     }
 
@@ -42,7 +44,7 @@ public class Helicopter : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            
+            GM.GameWon = true;
         }
     }
 }

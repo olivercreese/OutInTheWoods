@@ -10,6 +10,7 @@ TagManager:
   - Pistol
   - AudioManager
   - Helicopter
+  - LightingManager
   layers:
   - Default
   - TransparentFX

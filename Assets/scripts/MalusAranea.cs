@@ -26,6 +26,7 @@ public class MalusAranea : Entity
     private bool aggro;
     public float DetectionTime = 3f;
     private float detectionTimer;
+    private float playerUnseenTimer;
     private float howlTimer;
     public float DetectRange = 10f;
     public float DetectAngle = 45f;
@@ -145,11 +146,23 @@ public class MalusAranea : Entity
         
 
 
-        if (!canSeePlayer())
+        if (!canSeePlayer() && playerUnseen())
         {
             currentState = monsterState.searching;
 
         }
+        else playerUnseenTimer = 0;
+    }
+
+    protected bool playerUnseen()
+    {
+        playerUnseenTimer += Time.deltaTime;
+        if (playerUnseenTimer >= 2)
+        {
+            playerUnseenTimer = 0;
+            return true;
+        }
+        else return false;
     }
 
     protected void wait()

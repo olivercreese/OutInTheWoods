@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
     {
         GM = GameObject.Find("GameManager");
         PlayDayTimeLoop();
+        ambientSound.loop = true;
     }
 
     public void PlaySFX(AudioClip clip,AudioSource src)
@@ -27,14 +28,12 @@ public class AudioManager : MonoBehaviour
     {
         ambientSound.clip = DayTimeLooping;
         ambientSound.Play();
-        ambientSound.loop = true;
     }
 
     public void PlayNightTimeLoop()
     {
         ambientSound.clip = NightTimeLooping;
         ambientSound.Play();
-        ambientSound.loop = true;
     }
 
     public void OnNightTime()
