@@ -58,10 +58,9 @@ public class MalusAranea : Entity
         switch (currentState)
         {
             case monsterState.Chasing:
-                NavAgent.acceleration = 40;
+                NavAgent.acceleration = 20;
                 NavAgent.speed = 30;
                 anim.speed = 1.5f;
-                NavAgent.autoBraking = false;
                 canSeeWhenCrouched = true;
                 anim.SetBool("isChasing", true);
                 anim.SetBool("isWandering", false);
@@ -86,7 +85,6 @@ public class MalusAranea : Entity
             case monsterState.searching:
                 NavAgent.speed = 5;
                 NavAgent.acceleration = 5;
-                NavAgent.autoBraking = true;
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", true);
                 canSeeWhenCrouched = false;
@@ -149,15 +147,16 @@ public class MalusAranea : Entity
         if (!canSeePlayer() && playerUnseen())
         {
             currentState = monsterState.searching;
+            anim.ResetTrigger("Howl");
 
         }
-        else playerUnseenTimer = 0;
+        
     }
 
     protected bool playerUnseen()
     {
         playerUnseenTimer += Time.deltaTime;
-        if (playerUnseenTimer >= 2)
+        if (playerUnseenTimer >= 1.5)
         {
             playerUnseenTimer = 0;
             return true;
@@ -252,7 +251,11 @@ public class MalusAranea : Entity
         float angle = Vector3.SignedAngle(side1, side2, Vector3.up);
         if (angle < DetectAngle && angle > -1 * DetectAngle) isInAngle = true;
 
-        if (isInAngle && isInRange && isNotHidden) return true;
+        if (isInAngle && isInRange && isNotHidden)
+        {
+            playerUnseenTimer = 0;
+            return true;
+        }
         else return false;
 
     } 

@@ -75,7 +75,6 @@ public class InmundaFormica : Entity
                 NavAgent.acceleration = 20;
                 NavAgent.speed = 20;
                 anim.speed = 1.5f;
-                NavAgent.autoBraking = false;
                 canSeeWhenCrouched = true;
                 anim.SetBool("isChasing", true);
                 anim.SetBool("isWandering", false);
@@ -100,7 +99,6 @@ public class InmundaFormica : Entity
             case monsterState.searching:
                 NavAgent.speed = 5;
                 NavAgent.acceleration = 5;
-                NavAgent.autoBraking = true;
                 anim.SetBool("isChasing", false);
                 anim.SetBool("isWandering", true);
                 canSeeWhenCrouched = false;
@@ -185,7 +183,7 @@ public class InmundaFormica : Entity
         if (!canSeePlayer() && playerUnseen())
         {
             currentState = monsterState.searching;
-
+            anim.ResetTrigger("Howl");
         }
     }
 
@@ -307,7 +305,11 @@ public class InmundaFormica : Entity
         float angle = Vector3.SignedAngle(side1, side2, Vector3.up);
         if (angle < DetectAngle && angle > -1 * DetectAngle) isInAngle = true;
 
-        if (isInAngle && isInRange && isNotHidden) return true;
+        if (isInAngle && isInRange && isNotHidden)
+        {
+            playerUnseenTimer = 0;
+            return true;
+        }
         else return false;
 
     }

@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
         {
             Helicopter.SetActive(true);
         }
+        
         UpdateTimeOfDay();
         UpdatePlayerDamage();
     }
@@ -127,6 +128,7 @@ public class GameManager : MonoBehaviour
                 break;
             case 0:
                 bloodEffect.color = new Color(bloodEffect.color.r, bloodEffect.color.g, bloodEffect.color.b, 1.0f);
+                OnDeath();
                 break;
         }
     }
@@ -139,7 +141,7 @@ public class GameManager : MonoBehaviour
         TimeSpan time = new TimeSpan(hours, minutes, 0);
         return time.ToString(@"hh\:mm");
     }
-    private void OnDeath()
+    public void OnDeath()
     {
         float fadealpha = FadeToBlack.color.a + Time.deltaTime / 2;
         FadeToBlack.color = new Color(FadeToBlack.color.r, FadeToBlack.color.g, FadeToBlack.color.b, fadealpha);

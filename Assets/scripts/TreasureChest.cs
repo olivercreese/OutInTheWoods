@@ -8,19 +8,22 @@ public class TreasureChest : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     private AudioManager audioManager;
     private GameManager GM;
+    private bool treasureCollected;
     private void Start()
     {
         GM = GameObject.Find("GameManager").GetComponent<GameManager>();
         audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+        treasureCollected = false;  
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player" )
+        if (other.gameObject.tag == "Player" && !treasureCollected)
         {
             treasure.SetActive(false);
             audioManager.PlaySFX(treasureSound, audioSource);
-            GM.TreasureCount+=6;
+            GM.TreasureCount++;
             GM.UpdateTreasureText();
+            treasureCollected = true;
         }
     }
 
