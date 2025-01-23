@@ -68,8 +68,8 @@ public class InmundaFormica : Entity
         switch (currentState)
         {
             case monsterState.Chasing:
-                NavAgent.acceleration = 20;
-                NavAgent.speed = 20;
+                NavAgent.acceleration = 25;
+                NavAgent.speed = 30;
                 anim.speed = 1.5f;
                 canSeeWhenCrouched = true;
                 anim.SetBool("isChasing", true);
@@ -146,7 +146,7 @@ public class InmundaFormica : Entity
     
     protected void Chasing()
     {
-        if (NavAgent.remainingDistance <= 5 )
+        if (NavAgent.remainingDistance <= 10 )
         {
             audioManager.PlaySFX(attack, MainAudioSrc);
             anim.SetTrigger("Attack");
