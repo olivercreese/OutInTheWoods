@@ -146,6 +146,9 @@ public class MalusAranea : Entity
         if (NavAgent.remainingDistance <= 10)
         {
             anim.SetTrigger("Attack"); // plays the attack animation when the player is within range 
+            Vector3 relativePos = player.transform.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up); // rotates towards the player
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.time * 0.005f);
             audioManager.PlaySFX(attack, MainAudioSrc); // plays the attack sound 
             NavAgent.speed = 0; // stops the monster from moving when attacking 
         }
@@ -231,7 +234,7 @@ public class MalusAranea : Entity
     }
 
 
-    protected bool canSeePlayer()
+    protected bool canSeePlayer() 
     {
         isInAngle = false;
         isInRange = false;
@@ -257,7 +260,7 @@ public class MalusAranea : Entity
         Vector3 side1 = player.transform.position - transform.position; 
         Vector3 side2 = transform.forward;
         float angle = Vector3.SignedAngle(side1, side2, Vector3.up); // checks the angle between the monsters front vector and the displacement vector between the monster and the player
-        if (angle < DetectAngle && angle > -1 * DetectAngle) isInAngle = true; //checks the positive and negative angle to see if the player is within the monsters field of view
+        if (angle < DetectAngle && angle > -DetectAngle) isInAngle = true; //checks the positive and negative angle to see if the player is within the monsters field of view
 
         if (isInAngle && isInRange && isNotHidden)
         {

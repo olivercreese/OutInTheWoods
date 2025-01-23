@@ -149,6 +149,9 @@ public class InmundaFormica : Entity
         if (NavAgent.remainingDistance <= 10 )
         {
             audioManager.PlaySFX(attack, MainAudioSrc);
+            Vector3 relativePos = player.transform.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.time * 0.005f); // rotate towards player
             anim.SetTrigger("Attack");
             NavAgent.speed = 0;
         }
@@ -259,7 +262,7 @@ public class InmundaFormica : Entity
         Vector3 side1 = player.transform.position - transform.position;
         Vector3 side2 = transform.forward;
         float angle = Vector3.SignedAngle(side1, side2, Vector3.up);
-        if (angle < DetectAngle && angle > -1 * DetectAngle) isInAngle = true;
+        if (angle < DetectAngle && angle > -DetectAngle) isInAngle = true;
 
         if (isInAngle && isInRange && isNotHidden)
         {
