@@ -7,7 +7,6 @@ public class LightingManager : MonoBehaviour //https://www.youtube.com/watch?v=m
     [SerializeField] private LightingPreset preset;
     [SerializeField] private Material skyboxMaterial;
     [SerializeField,Range(0,24)] public float TimeOfDay;
-
     private void Update()
     {
         if (preset == null)
@@ -25,8 +24,6 @@ public class LightingManager : MonoBehaviour //https://www.youtube.com/watch?v=m
             UpdateLighting(TimeOfDay / 24f);
         }
     }
-
-
     private void UpdateLighting(float timePercent)
     {
         RenderSettings.ambientLight = preset.AmbientColor.Evaluate(timePercent);
@@ -38,7 +35,6 @@ public class LightingManager : MonoBehaviour //https://www.youtube.com/watch?v=m
             directionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, 170f, 0));
         }
     }
-
     private void OnValidate()
     {
         if (directionalLight != null)
@@ -59,9 +55,5 @@ public class LightingManager : MonoBehaviour //https://www.youtube.com/watch?v=m
                 }
             }
         }
-        
     }
-
-
-
 }
