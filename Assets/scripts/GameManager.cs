@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         isMonsterSpawned = false; // monster spawn flag set to false
-        for (int i = 0; i < 25; i++) //loop for spawning the animals
+        for (int i = 0; i < 50; i++) //loop for spawning the animals
         {
             int random = UnityEngine.Random.Range(1, 4); //random number for the animal type
             GameObject animalPrefab = null;
