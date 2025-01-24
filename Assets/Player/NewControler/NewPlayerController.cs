@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
-using UnityEditor.SearchService;
-using Unity.VisualScripting;
 
 //https://www.youtube.com/watch?v=xWHsS7ju3m8 // tutorial link for the controller
 
